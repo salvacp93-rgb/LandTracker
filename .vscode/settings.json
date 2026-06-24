@@ -4,5 +4,35 @@
     "sweetpad.build.configuration": "Debug",
     "sweetpad.simulator.deviceName": "iPhone 17",
     "sweetpad.simulator.osVersion": "26.5",
-    "swift.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+    "swift.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+    "sweetpad.build.xcodeWorkspacePath": "LandTracker.xcodeproj/project.xcworkspace",
+
+    "gitlens.graph.enabled": true,
+    "gitlens.graph.layout": "panel",
+    "gitlens.currentLine.enabled": true,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.blame.format": "${message|50?} ${agoOrDate|14-}",
+    "gitlens.views.repositories.showBranchComparison": "branch",
+    "gitlens.graph.pullRequests.enabled": true,
+
+    "editor.minimap.enabled": true,
+    "editor.stickyScroll.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.lineNumbers": "on",
+
+    "workbench.editor.showTabs": "multiple",
+    "workbench.panel.defaultLocation": "bottom",
+    "workbench.sideBar.location": "left",
+    "workbench.activityBar.location": "default",
+    "workbench.statusBar.visible": true,
+
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "git.autofetch": true,
+
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.xcodeproj": "${capture}.xcworkspace",
+        "*.swift": "${capture}.generated.swift"
+    }
 }

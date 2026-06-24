@@ -3,7 +3,6 @@ import SwiftData
 
 @main
 struct LandTrackerApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let container: ModelContainer
     @StateObject private var authViewModel = AuthViewModel()
     @StateObject private var roleAccessViewModel = RoleAccessViewModel()
