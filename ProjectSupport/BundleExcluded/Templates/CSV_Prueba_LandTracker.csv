@@ -1,0 +1,7 @@
+refcat,land_name,year,month,income,production,production_unit,electricity_kwh,notes
+04053A03900399,Terreno Norte,2026,1,12500.50,18.2,t,3400,Campana invierno
+,Terreno Norte,2026,2,11320.00,17.9,t,3280,Menor radiacion
+,Terreno Norte,2026,3,14110.75,19.6,t,3650,Recuperacion estacional
+,Terreno Sur,2026,1,9820.40,13.4,t,2870,Produccion estable
+,Terreno Sur,2026,2,10150.00,13.9,t,2950,Mejora de rendimiento
+,Terreno Sur,2026,3,10890.25,14.6,t,3060,Mayor eficiencia

@@ -1,0 +1,8 @@
+{
+    "sweetpad.build.xcodeProjectPath": "LandTracker.xcodeproj",
+    "sweetpad.build.scheme": "LandTracker",
+    "sweetpad.build.configuration": "Debug",
+    "sweetpad.simulator.deviceName": "iPhone 17",
+    "sweetpad.simulator.osVersion": "26.5",
+    "swift.path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+}

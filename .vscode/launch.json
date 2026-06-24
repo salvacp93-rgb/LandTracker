@@ -1,0 +1,11 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "sweetpad-lldb",
+            "request": "launch",
+            "name": "LandTracker (iPhone 17)",
+            "preLaunchTask": "sweetpad: Build"
+        }
+    ]
+}

@@ -1,0 +1,1 @@
+Place your logo image file here and add it to the Xcode asset catalog as `AppLogo`.
