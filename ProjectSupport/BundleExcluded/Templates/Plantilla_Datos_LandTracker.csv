@@ -1,7 +1,0 @@
-refcat,land_name,year,month,income,production,production_unit,electricity_kwh,notes
-1234567VK1233A,Terreno Norte,2026,1,12500.50,18.2,t,3400,Campana invierno
-1234567VK1233A,Terreno Norte,2026,2,11320.00,17.9,t,3280,Menor radiacion
-1234567VK1233A,Terreno Norte,2026,3,14110.75,19.6,t,3650,Recuperacion estacional
-7654321VK3321B,Terreno Sur,2026,1,9820.40,13.4,t,2870,Produccion estable
-7654321VK3321B,Terreno Sur,2026,2,10150.00,13.9,t,2950,Mejora de rendimiento
-7654321VK3321B,Terreno Sur,2026,3,10890.25,14.6,t,3060,Mayor eficiencia
