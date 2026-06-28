@@ -43,3 +43,4 @@ Icon?
 *.env
 Secrets.plist
 Config/Secrets.xcconfig
+Config/Supabase.xcconfig
