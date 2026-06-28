@@ -44,3 +44,16 @@ Icon?
 Secrets.plist
 Config/Secrets.xcconfig
 Config/Supabase.xcconfig
+
+# VS Code / SweetPad (configuración personal del editor)
+.vscode/
+buildServer.json
+
+# Backend Supabase (va en repositorio separado)
+DeploymentSupport/
+
+# Soporte de proyecto (plantillas, branding — no es código de la app)
+ProjectSupport/
+
+# Archivos de prueba
+Proyecto testeo/
