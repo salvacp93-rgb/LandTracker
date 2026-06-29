@@ -57,3 +57,6 @@ ProjectSupport/
 
 # Archivos de prueba
 Proyecto testeo/
+
+# CodeGraph (índice local generado automáticamente)
+.codegraph/
