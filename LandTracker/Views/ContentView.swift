@@ -35,6 +35,14 @@ struct ContentView: View {
                         Label(language.localized("Lands", "Terrenos"), systemImage: "list.bullet")
                     }
 
+                if roleAccessViewModel.canViewEconomics {
+                    InsightsView()
+                        .tag(AppTab.insights)
+                        .tabItem {
+                            Label(language.localized("Insights", "Estadísticas"), systemImage: "chart.bar.fill")
+                        }
+                }
+
                 if roleAccessViewModel.canManageTeam {
                     TeamView()
                         .tag(AppTab.team)
@@ -86,5 +94,6 @@ private enum AppTab: Hashable {
     case dashboard
     case groups
     case lands
+    case insights
     case team
 }
