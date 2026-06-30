@@ -60,3 +60,6 @@ Proyecto testeo/
 
 # CodeGraph (índice local generado automáticamente)
 .codegraph/
+
+# Web landing page (separate repo)
+web/
