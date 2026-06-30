@@ -963,3 +963,23 @@ struct AccountView: View {
         return resizedImage.jpegData(compressionQuality: 0.82)
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    UserDefaults.standard.set(AppAccessRole.owner.rawValue, forKey: "access.activeRole")
+
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: Land.self, LandHistoryEntry.self, LandGroup.self, LandTask.self, PendingSyncOperation.self,
+        configurations: config
+    )
+
+    let auth = AuthViewModel()
+    auth.accountEmail = "carlos@fincaolivo.es"
+
+    return AccountView()
+        .modelContainer(container)
+        .environmentObject(auth)
+        .environmentObject(RoleAccessViewModel())
+}

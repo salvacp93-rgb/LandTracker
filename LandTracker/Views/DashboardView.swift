@@ -1434,3 +1434,37 @@ private struct DashboardQuickActionButton: View {
         .buttonStyle(.plain)
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    UserDefaults.standard.set(AppAccessRole.owner.rawValue, forKey: "access.activeRole")
+
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: Land.self, LandHistoryEntry.self, LandGroup.self, LandTask.self, PendingSyncOperation.self,
+        configurations: config
+    )
+
+    let ctx = container.mainContext
+    let group = LandGroup(name: "Finca El Olivo", colorHex: "#059669")
+    ctx.insert(group)
+    let land = Land(
+        name: "Parcela Norte",
+        latitude: 37.39, longitude: -5.99,
+        sizeAcres: 12.5,
+        productionType: ProductionCatalog.oliveGrove,
+        productionSubtype: "Picual",
+        incomeAnnual: 18000,
+        annualLaborCost: 4500,
+        notes: ""
+    )
+    land.group = group
+    ctx.insert(land)
+    let task = LandTask(type: .irrigation, title: "Riego semanal", dueDate: Date(), land: land)
+    ctx.insert(task)
+
+    return DashboardView()
+        .modelContainer(container)
+        .environmentObject(RoleAccessViewModel())
+}

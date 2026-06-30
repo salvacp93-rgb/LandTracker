@@ -63,3 +63,6 @@ Proyecto testeo/
 
 # Web landing page (separate repo)
 web/
+
+# App Store screenshots (local, no van al repo)
+Screenshots app/

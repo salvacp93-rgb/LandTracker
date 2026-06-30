@@ -380,3 +380,38 @@ private struct ParcelMapRow: View {
         .contentShape(Rectangle())
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(
+        for: Land.self, LandHistoryEntry.self, LandGroup.self, LandTask.self, PendingSyncOperation.self,
+        configurations: config
+    )
+
+    let ctx = container.mainContext
+    let land = Land(
+        name: "Parcela Norte",
+        latitude: 37.39, longitude: -5.99,
+        sizeAcres: 12.5,
+        productionType: ProductionCatalog.oliveGrove,
+        productionSubtype: "Picual",
+        incomeAnnual: 18000,
+        notes: ""
+    )
+    ctx.insert(land)
+    let land2 = Land(
+        name: "Zona Sur",
+        latitude: 37.38, longitude: -5.98,
+        sizeAcres: 8.0,
+        productionType: ProductionCatalog.citrus,
+        productionSubtype: "Naranjas",
+        incomeAnnual: 12000,
+        notes: ""
+    )
+    ctx.insert(land2)
+
+    return LandMapView()
+        .modelContainer(container)
+}
