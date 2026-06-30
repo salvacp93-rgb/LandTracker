@@ -1,61 +1,115 @@
-# LandTracker — Claude Code Guidelines
+# LandTracker — Project Guidelines
 
-## 1. Think Before Coding
-
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
-
-Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
-- If multiple interpretations exist, present them - don't pick silently.
-- If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
-
-## 2. Simplicity First
-
-**Minimum code that solves the problem. Nothing speculative.**
-
-- No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
-- No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
-
-## 3. Surgical Changes
-
-**Touch only what you must. Clean up only your own mess.**
-
-When editing existing code:
-- Don't "improve" adjacent code, comments, or formatting.
-- Don't refactor things that aren't broken.
-- Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
-
-When your changes create orphans:
-- Remove imports/variables/functions that YOUR changes made unused.
-- Don't remove pre-existing dead code unless asked.
-
-The test: Every changed line should trace directly to the user's request.
-
-## 4. Goal-Driven Execution
-
-**Define success criteria. Loop until verified.**
-
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+iOS app for land management. SwiftUI + SwiftData local-first, synced to Supabase. Built for agricultural/rural land owners and their teams.
 
 ---
 
-*These guidelines are working if:* fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+## Architecture
+
+```
+LandTrackerApp (entry point)
+├── AuthViewModel          — auth state, Supabase login/logout
+├── RoleAccessViewModel    — active role, permissions, role switching
+└── ContentView            — tab router (authenticated)
+    ├── DashboardView
+    ├── GroupListView → GroupDetailView → LandDetailView
+    ├── LandMapView
+    ├── InsightsView       — economic insights (owner-only)
+    └── AccountView
+```
+
+**Layer rules (never violate):**
+- `Views` call `Services` and `Models` — never the reverse
+- `ViewModels` sit between `Views` and `Services`
+- `Services` never import SwiftUI
+
+---
+
+## SwiftData Models
+
+Registered in `LandTrackerApp.swift` — only these are in the schema:
+
+| Model | File |
+|-------|------|
+| `Land` | `Models/Land.swift` |
+| `LandGroup` | `Models/LandGroup.swift` |
+| `LandHistoryEntry` | `Models/LandHistoryEntry.swift` |
+| `LandTask` | `Models/LandTask.swift` |
+| `PendingSyncOperation` | `Models/PendingSyncOperation.swift` |
+
+`LandInsight`, `ProductionCatalog`, `AppSettings` are NOT SwiftData models — they are value types / computed.
+
+To add a new model to persistence: add it to the `Schema` array in `LandTrackerApp.init()`.
+
+---
+
+## Role System
+
+Two roles: `owner` and `employee` (defined in `AppAccessRole.swift`).
+
+| Permission | Owner | Employee |
+|-----------|-------|----------|
+| `canViewEconomics` | ✅ | ❌ |
+| `canManageStructure` | ✅ | ❌ |
+| `canManageExpenses` | ✅ | ✅ |
+| `canUseDailyOperations` | ✅ | ✅ |
+
+**Active role is in `RoleAccessViewModel`** — injected as `@EnvironmentObject` everywhere.  
+Always gate UI with `roleAccessViewModel.canViewEconomics` etc., never hardcode role strings.
+
+`AppAccessRole.appRoles(from:)` maps Supabase org roles (`owner`, `admin`, `member`, `viewer`) → app roles. Default when unknown: `.owner`.
+
+---
+
+## Supabase Sync
+
+- `SupabaseSyncService.shared` — main sync, queues upserts, fetches org roles
+- `SupabaseAuthService` — login, logout, session management
+- `SupabaseIoTService` — IoT device telemetry
+- `PendingSyncOperation` — offline queue (SwiftData model)
+
+On sign-out: `SupabaseSyncService.shared.clearLocalCache(context:)` + `roleAccessViewModel.resetForSignedOut()` — both must be called together (see `LandTrackerApp.swift:62`).
+
+---
+
+## Services Reference
+
+| Service | Responsibility |
+|---------|---------------|
+| `SupabaseSyncService` | Land/group/task/history sync to cloud |
+| `SupabaseAuthService` | Auth (email + Apple Sign In) |
+| `SupabaseIoTService` | IoT telemetry push |
+| `BluetoothPairingService` | BLE device discovery & pairing |
+| `CatastroService` | Spanish Catastro parcel data fetch & parse |
+| `ImportExportService` | JSON import/export of land data |
+| `SpreadsheetImportService` | CSV spreadsheet import |
+| `TaskReminderService` | Local push notification reminders |
+| `PushNotificationService` | APNs device token sync |
+| `ProfileImageStore` | In-memory profile image cache |
+
+---
+
+## Key Hotspots (high fan-in — touch carefully)
+
+| Symbol | Fan-in | File |
+|--------|--------|------|
+| `AppLanguage.localized` | 57 | `Models/AppSettings.swift` |
+| `GroupEditorView.save` | 24 | `Views/GroupListView.swift` |
+| `LandHistoryEntry.touchUpdatedAt` | 12 | `Models/LandHistoryEntry.swift` |
+| `SupabaseSyncService.queueLandUpsert` | 10 | `Services/SupabaseSyncService.swift` |
+
+---
+
+## i18n
+
+All user-facing strings go through `AppLanguage.localized(_:_:)` — first arg is English, second is Spanish. Never hardcode display strings.
+
+---
+
+## What NOT to do
+
+- Don't add new SwiftData models without adding them to the `Schema` in `LandTrackerApp.init()`
+- Don't show economic data without checking `canViewEconomics`
+- Don't call `clearLocalCache` without also calling `resetForSignedOut` (and vice versa)
+- Don't call Supabase from a View directly — go through a Service
+- Don't bypass `RoleAccessViewModel` to check roles — never compare role strings manually
