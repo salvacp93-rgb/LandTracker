@@ -1280,15 +1280,15 @@ private struct GroupColorChoiceCard: View {
     )
 
     let ctx = container.mainContext
-    let group = LandGroup(name: "Finca El Olivo", colorHex: "#059669")
+    let group = LandGroup(name: "Cortijo San Marcos", colorHex: "#059669")
     ctx.insert(group)
     let land = Land(
-        name: "Parcela Norte",
-        latitude: 37.39, longitude: -5.99,
-        sizeAcres: 12.5,
+        name: "Cuartel Alto",
+        latitude: 38.019, longitude: -3.371,
+        sizeAcres: 29.6,
         productionType: ProductionCatalog.oliveGrove,
         productionSubtype: "Picual",
-        incomeAnnual: 18000,
+        incomeAnnual: 14500,
         notes: ""
     )
     land.group = group

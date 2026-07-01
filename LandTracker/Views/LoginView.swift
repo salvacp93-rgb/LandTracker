@@ -622,3 +622,9 @@ private struct EmployeeInviteGlassPopover: View {
         .shadow(color: .black.opacity(0.08), radius: 18, y: 8)
     }
 }
+
+// MARK: - Preview
+
+#Preview {
+    LoginView(viewModel: AuthViewModel())
+}

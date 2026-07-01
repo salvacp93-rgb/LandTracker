@@ -391,25 +391,29 @@ private struct ParcelMapRow: View {
     )
 
     let ctx = container.mainContext
+    let group = LandGroup(name: "Cortijo San Marcos", colorHex: "#059669")
+    ctx.insert(group)
     let land = Land(
-        name: "Parcela Norte",
-        latitude: 37.39, longitude: -5.99,
-        sizeAcres: 12.5,
+        name: "Cuartel Alto",
+        latitude: 38.019, longitude: -3.371,
+        sizeAcres: 29.6,
         productionType: ProductionCatalog.oliveGrove,
         productionSubtype: "Picual",
-        incomeAnnual: 18000,
+        incomeAnnual: 14500,
         notes: ""
     )
+    land.group = group
     ctx.insert(land)
     let land2 = Land(
-        name: "Zona Sur",
-        latitude: 37.38, longitude: -5.98,
-        sizeAcres: 8.0,
-        productionType: ProductionCatalog.citrus,
-        productionSubtype: "Naranjas",
-        incomeAnnual: 12000,
+        name: "La Loma",
+        latitude: 38.008, longitude: -3.358,
+        sizeAcres: 18.3,
+        productionType: ProductionCatalog.oliveGrove,
+        productionSubtype: "Arbequina",
+        incomeAnnual: 10200,
         notes: ""
     )
+    land2.group = group
     ctx.insert(land2)
 
     return LandMapView()
