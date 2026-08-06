@@ -49,6 +49,9 @@ Config/Supabase.xcconfig
 .vscode/
 buildServer.json
 
+# Claude Code (configuración local del editor)
+.claude/settings.local.json
+
 # Backend Supabase (va en repositorio separado)
 DeploymentSupport/
 
