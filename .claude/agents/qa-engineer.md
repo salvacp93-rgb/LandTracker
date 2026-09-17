@@ -3,7 +3,6 @@ name: qa-engineer
 description: Reviews LandTracker diffs for correctness bugs and simplification opportunities, and owns the test suites for the iOS app and the Supabase edge workers. No test target exists yet in the Xcode project, so early work is often scaffolding one before writing tests. Delegate pre-merge code review and test-writing/running here.
 tools: Read, Edit, Write, Glob, Grep, Bash, mcp__XcodeBuildMCP__*, mcp__apple-docs__*, mcp__github__*
 disallowedTools: mcp__supabase__*, mcp__semgrep__*
-skills: code-review, verify
 model: sonnet
 ---
 

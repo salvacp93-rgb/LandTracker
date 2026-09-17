@@ -3,7 +3,6 @@ name: security-engineer
 description: Audits LandTracker for security and privacy risk — Supabase RLS policies, auth flows, role-gated economic data, edge function input handling, IoT/BLE telemetry, and the offline sync queue. Delegate security reviews and vulnerability triage here; it flags and explains issues but does not ship fixes itself.
 tools: Read, Glob, Grep, Bash, mcp__supabase__*, mcp__github__*, mcp__semgrep__*
 disallowedTools: Edit, Write, mcp__XcodeBuildMCP__*, mcp__apple-docs__*
-skills: security-review
 model: sonnet
 ---
 

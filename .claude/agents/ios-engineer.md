@@ -3,7 +3,6 @@ name: ios-engineer
 description: Builds and maintains LandTracker's SwiftUI/SwiftData iOS app — Views, ViewModels, Models, and Services. Delegate iOS feature work, UI changes, and app-side bug fixes here.
 tools: Read, Edit, Write, Glob, Grep, Bash, mcp__XcodeBuildMCP__*, mcp__apple-docs__*, mcp__github__*
 disallowedTools: mcp__supabase__*
-skills: run, verify
 model: sonnet
 ---
 
