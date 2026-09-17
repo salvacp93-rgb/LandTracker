@@ -49,7 +49,7 @@ write_status running
 PROJECT_ROOT="$(cd "$DASH_DIR/../.." && pwd)"
 cd "$PROJECT_ROOT"
 
-if claude -p "$PROMPT" --agent "$AGENT" > "$LOG_FILE" 2>&1; then
+if claude -p "$PROMPT" --agent "$AGENT" --mcp-config "$PROJECT_ROOT/.mcp.json" > "$LOG_FILE" 2>&1; then
   write_status done "$(date +%s)"
 else
   write_status failed "$(date +%s)"
