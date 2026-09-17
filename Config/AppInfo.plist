@@ -32,12 +32,12 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>192.168.1.158</key>
+			<key>127.0.0.1</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
-			<key>127.0.0.1</key>
+			<key>192.168.1.158</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
@@ -55,6 +55,16 @@
 	<string>LandTracker uses Bluetooth to link nearby farm devices.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>LandTracker uses your local network to connect to your self-hosted Supabase server.</string>
+	<key>SUPABASE_ANON_KEY</key>
+	<string>$(SUPABASE_ANON_KEY)</string>
+	<key>SUPABASE_EMAIL_CONFIRMATION_REDIRECT_URL</key>
+	<string>$(SUPABASE_EMAIL_CONFIRMATION_REDIRECT_URL)</string>
+	<key>SUPABASE_URL_HOST</key>
+	<string>$(SUPABASE_URL_HOST)</string>
+	<key>SUPABASE_URL_PORT</key>
+	<string>$(SUPABASE_URL_PORT)</string>
+	<key>SUPABASE_URL_SCHEME</key>
+	<string>$(SUPABASE_URL_SCHEME)</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -82,15 +92,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>SUPABASE_URL_SCHEME</key>
-	<string>$(SUPABASE_URL_SCHEME)</string>
-	<key>SUPABASE_URL_HOST</key>
-	<string>$(SUPABASE_URL_HOST)</string>
-	<key>SUPABASE_URL_PORT</key>
-	<string>$(SUPABASE_URL_PORT)</string>
-	<key>SUPABASE_ANON_KEY</key>
-	<string>$(SUPABASE_ANON_KEY)</string>
-	<key>SUPABASE_EMAIL_CONFIRMATION_REDIRECT_URL</key>
-	<string>$(SUPABASE_EMAIL_CONFIRMATION_REDIRECT_URL)</string>
 </dict>
 </plist>

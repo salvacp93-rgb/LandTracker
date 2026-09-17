@@ -122,6 +122,10 @@ struct LandEditorView: View {
                     }
 
                     catastroCard
+
+                    if catastroRings.isEmpty {
+                        locationCard
+                    }
                 }
                 .padding(16)
                 .padding(.bottom, 28)
@@ -535,6 +539,20 @@ struct LandEditorView: View {
                     }
                 }
             }
+        }
+    }
+
+    private var locationCard: some View {
+        editorCard(
+            title: language.localized("Location", "Ubicación"),
+            subtitle: language.localized(
+                "Search an address or tap the map to set this land's position manually.",
+                "Busca una dirección o toca el mapa para fijar la posición de este terreno manualmente."
+            ),
+            systemImage: "mappin.circle.fill",
+            tint: Color(red: 0.86, green: 0.23, blue: 0.27)
+        ) {
+            LandLocationPickerCard(latitude: $latitude, longitude: $longitude, language: language)
         }
     }
 
