@@ -9,11 +9,11 @@ iOS app for land management. SwiftUI + SwiftData local-first, synced to Supabase
 ```
 LandTrackerApp (entry point)
 ├── AuthViewModel          — auth state, Supabase login/logout
-├── RoleAccessViewModel    — active role, permissions, role switching
+├── RoleAccessViewModel    — active role, permissions
 └── ContentView            — tab router (authenticated)
     ├── DashboardView
-    ├── GroupListView → GroupDetailView → LandDetailView
-    ├── LandMapView
+    ├── LandsView          — Lands tab: List/Map, one section per group + "Ungrouped" (logic in LandsHubViewModel)
+    │   └── GroupDetailView / LandDetailView
     ├── InsightsView       — economic insights (owner-only)
     └── AccountView
 ```
@@ -94,7 +94,7 @@ On sign-out: `SupabaseSyncService.shared.clearLocalCache(context:)` + `roleAcces
 | Symbol | Fan-in | File |
 |--------|--------|------|
 | `AppLanguage.localized` | 57 | `Models/AppSettings.swift` |
-| `GroupEditorView.save` | 24 | `Views/GroupListView.swift` |
+| `GroupEditorView.save` | 24 | `Views/GroupEditorView.swift` |
 | `LandHistoryEntry.touchUpdatedAt` | 12 | `Models/LandHistoryEntry.swift` |
 | `SupabaseSyncService.queueLandUpsert` | 10 | `Services/SupabaseSyncService.swift` |
 

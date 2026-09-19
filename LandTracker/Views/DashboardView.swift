@@ -46,27 +46,24 @@ struct DashboardView: View {
         Date().addingTimeInterval(-6 * 60 * 60)
     }
 
+    private var operationalForecast: OperationalForecastViewModel {
+        OperationalForecastViewModel(tasks: tasks, calendar: calendar)
+    }
+
     private var pendingTasks: [LandTask] {
-        tasks
-            .filter { !$0.isCompleted }
-            .sorted { lhs, rhs in
-                if lhs.dueDate == rhs.dueDate {
-                    return lhs.updatedAt > rhs.updatedAt
-                }
-                return lhs.dueDate < rhs.dueDate
-            }
+        operationalForecast.pendingTasks
     }
 
     private var overdueTasks: [LandTask] {
-        pendingTasks.filter { $0.dueDate < startOfToday }
+        operationalForecast.overdueTasks
     }
 
     private var dueTodayTasks: [LandTask] {
-        pendingTasks.filter { $0.dueDate >= startOfToday && $0.dueDate < endOfToday }
+        operationalForecast.dueTodayTasks
     }
 
     private var upcomingTasks: [LandTask] {
-        Array(pendingTasks.prefix(5))
+        operationalForecast.upcomingTasks
     }
 
     private var ungroupedLandCount: Int {
@@ -583,11 +580,11 @@ struct DashboardView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    SettingsToolbarButton {
+                    SettingsToolbarButton(language: language) {
                         showingSettings = true
                     }
 
-                    AccountToolbarButton {
+                    AccountToolbarButton(language: language) {
                         showingAccount = true
                     }
                 }

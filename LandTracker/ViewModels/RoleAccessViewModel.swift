@@ -45,10 +45,6 @@ final class RoleAccessViewModel: ObservableObject {
         hasAdminAccess
     }
 
-    var canSwitchAccessRole: Bool {
-        false
-    }
-
     func refreshRolesFromCloud() async {
         guard !isRefreshing else { return }
         isRefreshing = true
@@ -65,12 +61,6 @@ final class RoleAccessViewModel: ObservableObject {
                 applyAvailableRoles([.owner])
             }
         }
-    }
-
-    func selectRole(_ role: AppAccessRole) {
-        guard availableRoles.contains(role) else { return }
-        activeRole = role
-        defaults.set(role.rawValue, forKey: AccountPreferences.activeAccessRoleKey)
     }
 
     func resetForSignedOut() {

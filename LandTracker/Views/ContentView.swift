@@ -23,16 +23,10 @@ struct ContentView: View {
                         Label(language.localized("Dashboard", "Dashboard"), systemImage: "rectangle.3.group.bubble.left.fill")
                     }
 
-                GroupListView()
-                    .tag(AppTab.groups)
-                    .tabItem {
-                        Label(language.localized("Groups", "Grupos"), systemImage: "square.grid.2x2")
-                    }
-
-                LandListView()
+                LandsView()
                     .tag(AppTab.lands)
                     .tabItem {
-                        Label(language.localized("Lands", "Terrenos"), systemImage: "list.bullet")
+                        Label(language.localized("Lands", "Terrenos"), systemImage: "square.split.2x2")
                     }
 
                 if roleAccessViewModel.canViewEconomics {
@@ -50,12 +44,6 @@ struct ContentView: View {
                             Label(language.localized("Team", "Equipo"), systemImage: "person.2")
                         }
                 }
-            }
-
-            if roleAccessViewModel.canSwitchAccessRole {
-                RoleSwitchButton()
-                    .padding(.leading, 16)
-                    .padding(.bottom, 84)
             }
         }
         .task(id: authViewModel.userID) {
@@ -92,7 +80,6 @@ struct ContentView: View {
 
 private enum AppTab: Hashable {
     case dashboard
-    case groups
     case lands
     case insights
     case team

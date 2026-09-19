@@ -464,7 +464,7 @@ struct LandDetailView: View {
         .toolbar {
             if canManageStructure {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Edit") {
+                    Button(language.localized("Edit", "Editar")) {
                         showingEdit = true
                     }
                 }
@@ -474,6 +474,7 @@ struct LandDetailView: View {
                     } label: {
                         Image(systemName: "trash")
                     }
+                    .accessibilityLabel(language.localized("Delete land", "Eliminar terreno"))
                 }
             }
         }
@@ -584,8 +585,8 @@ struct LandDetailView: View {
 
     private var alertConfiguredContent: some View {
         sheetConfiguredContent
-            .alert("Delete Land?", isPresented: $showingDelete) {
-                Button("Delete", role: .destructive) {
+            .alert(language.localized("Delete Land?", "¿Eliminar terreno?"), isPresented: $showingDelete) {
+                Button(language.localized("Delete", "Eliminar"), role: .destructive) {
                     let deletedID = land.id
                     context.delete(land)
                     try? context.save()
@@ -594,9 +595,9 @@ struct LandDetailView: View {
                     }
                     dismiss()
                 }
-                Button("Cancel", role: .cancel) {}
+                Button(language.localized("Cancel", "Cancelar"), role: .cancel) {}
             } message: {
-                Text("This will permanently delete this land.")
+                Text(language.localized("This will permanently delete this land.", "Esto eliminará permanentemente este terreno."))
             }
             .alert(
                 language.localized("Delete Record?", "¿Eliminar registro?"),
@@ -2155,6 +2156,11 @@ private struct LandTaskRow: View {
                         .foregroundStyle(task.isCompleted ? .green : .secondary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(
+                    task.isCompleted
+                        ? language.localized("Mark incomplete", "Marcar como pendiente")
+                        : language.localized("Mark complete", "Marcar como completada")
+                )
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(task.title)
@@ -2190,6 +2196,7 @@ private struct LandTaskRow: View {
                         .font(.title3)
                         .foregroundStyle(.secondary)
                 }
+                .accessibilityLabel(language.localized("More options", "Más opciones"))
             }
 
             if !notesText.isEmpty {
@@ -2492,6 +2499,7 @@ private struct LandDeviceRow: View {
                             .font(.title3)
                             .foregroundStyle(.secondary)
                     }
+                    .accessibilityLabel(language.localized("More options", "Más opciones"))
                 }
             }
 
@@ -2776,12 +2784,14 @@ private struct HistoryEntryRow: View {
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
+                        .accessibilityLabel(language.localized("Edit record", "Editar registro"))
 
                         Button(role: .destructive, action: onDelete) {
                             Image(systemName: "trash")
                         }
                         .buttonStyle(.bordered)
                         .controlSize(.small)
+                        .accessibilityLabel(language.localized("Delete record", "Eliminar registro"))
                     }
                 } else {
                     Text("Excel")

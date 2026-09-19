@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AccountToolbarButton: View {
+    let language: AppLanguage
     let action: () -> Void
     @ObservedObject private var profileImageStore = ProfileImageStore.shared
 
@@ -12,6 +13,6 @@ struct AccountToolbarButton: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Cuenta")
+        .accessibilityLabel(language.localized("Account", "Cuenta"))
     }
 }

@@ -120,10 +120,10 @@ struct TeamView: View {
             .navigationTitle(language.localized("Team", "Equipo"))
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    SettingsToolbarButton {
+                    SettingsToolbarButton(language: language) {
                         showingSettings = true
                     }
-                    AccountToolbarButton {
+                    AccountToolbarButton(language: language) {
                         showingAccount = true
                     }
                 }
@@ -138,6 +138,7 @@ struct TeamView: View {
                         }
                     }
                     .disabled(isLoading)
+                    .accessibilityLabel(language.localized("Refresh", "Actualizar"))
                 }
             }
             .sheet(isPresented: $showingSettings) {

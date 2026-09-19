@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SettingsToolbarButton: View {
+    let language: AppLanguage
     let action: () -> Void
 
     var body: some View {
@@ -11,6 +12,6 @@ struct SettingsToolbarButton: View {
                 .background(Color(.secondarySystemBackground), in: Circle())
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Configuración")
+        .accessibilityLabel(language.localized("Settings", "Configuración"))
     }
 }
