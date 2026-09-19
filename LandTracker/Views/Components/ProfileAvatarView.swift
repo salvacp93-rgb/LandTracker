@@ -16,7 +16,7 @@ struct ProfileAvatarView: View {
                     .resizable()
                     .scaledToFit()
                     .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(.green)
+                    .foregroundStyle(AppTheme.olive)
                     .padding(size * 0.12)
             }
         }

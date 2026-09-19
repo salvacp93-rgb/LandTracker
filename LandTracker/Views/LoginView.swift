@@ -39,12 +39,12 @@ struct LoginView: View {
                     credentialCard
 
                     if let error = viewModel.errorMessage {
-                        StatusBanner(text: error, icon: "exclamationmark.triangle.fill", tint: .red)
+                        StatusBanner(text: error, icon: "exclamationmark.triangle.fill", tint: AppTheme.negative)
                             .padding(.horizontal, 24)
                     }
 
                     if let success = viewModel.successMessage {
-                        StatusBanner(text: success, icon: "checkmark.circle.fill", tint: .green)
+                        StatusBanner(text: success, icon: "checkmark.circle.fill", tint: AppTheme.positive)
                             .padding(.horizontal, 24)
                     }
 
@@ -55,13 +55,14 @@ struct LoginView: View {
                                 .padding(.vertical, 2)
                         } else {
                             Text(language.localized("Sign in", "Iniciar sesión"))
-                                .fontWeight(.semibold)
+                                .font(.poppins(.body, .semibold))
+                                .foregroundStyle(AppTheme.onBrand)
                                 .frame(maxWidth: .infinity)
                         }
                     }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
-                    .tint(brandBlue)
+                    .tint(AppTheme.clay)
                     .padding(.horizontal, 24)
                     .disabled(viewModel.isLoading)
 
@@ -71,10 +72,10 @@ struct LoginView: View {
                         showingRegistration = true
                     } label: {
                         Text(language.localized("Create account", "Crear cuenta"))
-                            .font(.callout.weight(.semibold))
+                            .font(.poppins(.callout, .semibold))
                     }
                     .buttonStyle(.plain)
-                    .foregroundStyle(brandBlue)
+                    .foregroundStyle(AppTheme.clayText)
                     .disabled(viewModel.isLoading)
 
                     EmployeeInviteInfoButton(
@@ -140,27 +141,19 @@ struct LoginView: View {
         await viewModel.submit()
     }
 
-    private var brandBlue: Color {
-        Color(red: 0.06, green: 0.22, blue: 0.42)
-    }
-
     private var loginBackground: some View {
         ZStack {
-            LinearGradient(
-                colors: [Color(.systemBackground), Color(.secondarySystemBackground)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            AppBackground()
 
+            // Soft tinted glows behind the glass header, kept from the original look (recolored to brand).
             Circle()
-                .fill(brandBlue.opacity(0.14))
+                .fill(AppTheme.olive.opacity(0.14))
                 .frame(width: 340, height: 340)
                 .blur(radius: 52)
                 .offset(x: -150, y: -280)
 
             Circle()
-                .fill(Color.cyan.opacity(0.1))
+                .fill(AppTheme.clay.opacity(0.10))
                 .frame(width: 300, height: 300)
                 .blur(radius: 48)
                 .offset(x: 160, y: -40)
@@ -168,29 +161,26 @@ struct LoginView: View {
     }
 
     private var brandHeader: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 18) {
             ZStack {
-                Circle()
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .fill(.ultraThinMaterial)
-                Circle()
+                RoundedRectangle(cornerRadius: 24, style: .continuous)
                     .stroke(Color.primary.opacity(0.14), lineWidth: 1)
 
-                Image("AppLogoCircle")
+                Image("AppMosaic")
                     .resizable()
-                    .scaledToFill()
-                    .frame(width: 112, height: 112)
-                    .clipShape(Circle())
-                    .offset(x: -2, y: -4)
+                    .scaledToFit()
+                    .frame(width: 66)
+                    .accessibilityHidden(true)
             }
-            .frame(width: 128, height: 128)
+            .frame(width: 96, height: 96)
             .shadow(color: .black.opacity(0.14), radius: 16, y: 8)
             .frame(maxWidth: .infinity, alignment: .center)
-            .offset(y: -4)
 
             Text("LandTracker")
-                .font(.custom("AvenirNext-HeavyItalic", size: 44))
-                .foregroundStyle(brandBlue)
-                .kerning(-0.4)
+                .font(.poppins(size: 34, .bold, relativeTo: .largeTitle))
+                .foregroundStyle(AppTheme.wordmark)
                 .lineLimit(1)
                 .minimumScaleFactor(0.85)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -202,8 +192,8 @@ struct LoginView: View {
                     "Accede para mantener tus tierras y tu equipo sincronizados."
                 )
             )
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.subheadline))
+            .foregroundStyle(AppTheme.inkSecondary)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 26)
         }
@@ -313,27 +303,27 @@ private struct LoginCredentialField<Field: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 7) {
             Text(label)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
 
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .frame(width: 18)
 
                 field()
-                    .font(.body)
+                    .font(.poppins(.body))
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 11)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color.primary.opacity(0.06))
+                    .fill(AppTheme.card)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.primary.opacity(0.1), lineWidth: 1)
+                    .stroke(AppTheme.hairline, lineWidth: 1)
             )
         }
     }
@@ -349,7 +339,7 @@ private struct StatusBanner: View {
             Image(systemName: icon)
                 .foregroundStyle(tint)
             Text(text)
-                .font(.footnote)
+                .font(.poppins(.footnote))
                 .foregroundStyle(tint)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -383,19 +373,14 @@ private struct RegistrationSheetView: View {
         AppSettings.language(from: appLanguageRaw)
     }
 
-    private var registrationBackground: Color {
-        Color(uiColor: .systemGroupedBackground)
-    }
-
     private var registrationRowBackground: Color {
-        Color(uiColor: .secondarySystemGroupedBackground)
+        AppTheme.card
     }
 
     var body: some View {
         NavigationStack {
             ZStack {
-                registrationBackground
-                    .ignoresSafeArea()
+                AppBackground()
 
                 Form {
                     Section(language.localized("Account type", "Tipo de cuenta")) {
@@ -414,7 +399,7 @@ private struct RegistrationSheetView: View {
                     Section(language.localized("Access data", "Datos de acceso")) {
                         HStack(spacing: 10) {
                             Image(systemName: "envelope.fill")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .frame(width: 18)
 
                             TextField("Email", text: $email)
@@ -426,7 +411,7 @@ private struct RegistrationSheetView: View {
 
                         HStack(spacing: 10) {
                             Image(systemName: "lock.fill")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .frame(width: 18)
 
                             SecureField(language.localized("Password", "Contraseña"), text: $password)
@@ -435,7 +420,7 @@ private struct RegistrationSheetView: View {
 
                         HStack(spacing: 10) {
                             Image(systemName: "lock.fill")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .frame(width: 18)
 
                             SecureField(language.localized("Confirm password", "Confirmar contraseña"), text: $confirmPassword)
@@ -447,8 +432,8 @@ private struct RegistrationSheetView: View {
                     if let message = errorMessageToDisplay {
                         Section {
                             Text(message)
-                                .font(.footnote)
-                                .foregroundStyle(.red)
+                                .font(.poppins(.footnote))
+                                .foregroundStyle(AppTheme.negative)
                         }
                         .listRowBackground(registrationRowBackground)
                     }
@@ -457,10 +442,10 @@ private struct RegistrationSheetView: View {
                         Section {
                             HStack(spacing: 8) {
                                 Image(systemName: "checkmark.circle.fill")
-                                    .foregroundStyle(.green)
+                                    .foregroundStyle(AppTheme.positive)
                                 Text(success)
-                                    .font(.footnote)
-                                    .foregroundStyle(.green)
+                                    .font(.poppins(.footnote))
+                                    .foregroundStyle(AppTheme.positive)
                             }
                         }
                         .listRowBackground(registrationRowBackground)
@@ -477,6 +462,8 @@ private struct RegistrationSheetView: View {
                                         .frame(maxWidth: .infinity)
                                 } else {
                                     Text(submitLabel)
+                                        .font(.poppins(.body, .semibold))
+                                        .foregroundStyle(AppTheme.onBrand)
                                         .frame(maxWidth: .infinity)
                                 }
                             }
@@ -490,7 +477,6 @@ private struct RegistrationSheetView: View {
 
                 }
                 .scrollContentBackground(.hidden)
-                .background(registrationBackground)
                 .listSectionSpacing(14)
             }
             .navigationTitle(language.localized("Create account", "Crear cuenta"))
@@ -579,11 +565,11 @@ private struct EmployeeInviteInfoButton: View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Image(systemName: "info.circle.fill")
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(AppTheme.olive)
 
                 Text(title)
-                    .font(.footnote.weight(.semibold))
-                    .foregroundStyle(.blue)
+                    .font(.poppins(.footnote, .semibold))
+                    .foregroundStyle(AppTheme.olive)
                     .lineLimit(1)
             }
             .padding(.horizontal, 14)
@@ -591,7 +577,7 @@ private struct EmployeeInviteInfoButton: View {
             .background(.ultraThinMaterial, in: Capsule())
             .overlay(
                 Capsule()
-                    .stroke(Color.blue.opacity(0.22), lineWidth: 1)
+                    .stroke(AppTheme.olive.opacity(0.22), lineWidth: 1)
             )
         }
         .buttonStyle(.plain)
@@ -604,12 +590,12 @@ private struct EmployeeInviteGlassPopover: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: "info.circle.fill")
-                .foregroundStyle(.blue)
+                .foregroundStyle(AppTheme.olive)
                 .font(.headline.weight(.semibold))
 
             Text(text)
-                .font(.footnote.weight(.medium))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.footnote, .medium))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, 16)

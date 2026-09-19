@@ -116,7 +116,7 @@ struct GroupDetailView: View {
             }
             .padding()
         }
-        .background(Color(.systemGroupedBackground))
+        .background(AppBackground())
         .navigationTitle(group.name)
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(item: $selectedLandRoute) { route in
@@ -124,7 +124,7 @@ struct GroupDetailView: View {
                 LandDetailView(land: land)
             } else {
                 Text(language.localized("Land not found", "Terreno no encontrado"))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
         }
         .onAppear {
@@ -143,13 +143,13 @@ struct GroupDetailView: View {
                     .frame(width: 12, height: 12)
 
                 Text(group.name)
-                    .font(.title3.weight(.semibold))
+                    .font(.poppins(.title3, .semibold))
 
                 Spacer()
 
                 Text("\(lands.count) \(language.localized("lands", "terrenos"))")
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline, .medium))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -192,21 +192,21 @@ struct GroupDetailView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(language.localized("Map Snapshot", "Mini mapa"))
-                    .font(.headline)
+                    .font(.poppins(.headline))
                 Spacer()
                 Text(language.localized("Mini view", "Vista rápida"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
 
             if lands.isEmpty {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color(.secondarySystemBackground))
+                    .fill(AppTheme.card)
                     .frame(height: 170)
                     .overlay {
                         Text(language.localized("Add lands to see this group's map", "Añade terrenos para ver el mapa del grupo"))
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.subheadline))
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
             } else {
                 Map(position: $position) {
@@ -310,20 +310,20 @@ struct GroupDetailView: View {
     private var productionCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(language.localized("Production Mix", "Distribución de producción"))
-                .font(.headline)
+                .font(.poppins(.headline))
 
             if productionBreakdown.isEmpty {
                 Text(language.localized("No production data yet", "Aún no hay datos de producción"))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline))
+                    .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 ForEach(productionBreakdown, id: \.rawName) { item in
                     HStack {
                         Text(item.displayName)
-                            .font(.subheadline)
+                            .font(.poppins(.subheadline))
                         Spacer()
                         Text("\(item.count)")
-                            .font(.subheadline.weight(.semibold))
+                            .font(.poppins(.subheadline, .semibold))
                     }
                 }
             }
@@ -336,12 +336,12 @@ struct GroupDetailView: View {
     private var landsCard: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(language.localized("Lands", "Terrenos"))
-                .font(.headline)
+                .font(.poppins(.headline))
 
             if lands.isEmpty {
                 Text(language.localized("No lands assigned to this group", "No hay terrenos asignados a este grupo"))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline))
+                    .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 ForEach(lands) { land in
                     Button {
@@ -358,18 +358,18 @@ struct GroupDetailView: View {
 
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(land.name)
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.poppins(.subheadline, .semibold))
                                 Text(ProductionCatalog.displayName(for: land.productionType, language: language))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .font(.poppins(.caption))
+                                    .foregroundStyle(AppTheme.inkSecondary)
                             }
 
                             Spacer()
 
                             if roleAccessViewModel.canViewEconomics {
                                 Text(land.incomeAnnual, format: .currency(code: currencyCode))
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .font(.poppins(.caption))
+                                    .foregroundStyle(AppTheme.inkSecondary)
                             }
                         }
                     }
@@ -458,7 +458,7 @@ private struct GroupPillStat: View {
             Image(systemName: icon)
                 .font(.caption)
             Text(label)
-                .font(.caption.weight(.medium))
+                .font(.poppins(.caption, .medium))
                 .lineLimit(1)
         }
         .padding(.horizontal, 10)
@@ -474,10 +474,10 @@ private struct GroupMetricModeHeader: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
             Text(subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
     }
 }
@@ -490,10 +490,10 @@ private struct GroupMetricCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Label(title, systemImage: icon)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
             Text(value)
-                .font(.headline)
+                .font(.poppins(.headline, .bold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
         }

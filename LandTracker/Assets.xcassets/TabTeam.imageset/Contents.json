@@ -1,0 +1,26 @@
+{
+  "images": [
+    {
+      "filename": "TabTeam.png",
+      "idiom": "universal",
+      "scale": "1x"
+    },
+    {
+      "filename": "TabTeam@2x.png",
+      "idiom": "universal",
+      "scale": "2x"
+    },
+    {
+      "filename": "TabTeam@3x.png",
+      "idiom": "universal",
+      "scale": "3x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  },
+  "properties": {
+    "template-rendering-intent": "original"
+  }
+}

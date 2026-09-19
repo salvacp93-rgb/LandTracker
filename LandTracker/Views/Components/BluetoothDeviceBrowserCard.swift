@@ -76,13 +76,13 @@ struct BluetoothDeviceBrowserCard: View {
 
                 if pairingService.isScanning {
                     Text(language.localized("Scanning nearby devices", "Buscando dispositivos cercanos"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                         .lineLimit(1)
                 } else if hasResults {
                     Text(language.localized("Search stopped", "Búsqueda detenida"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                         .lineLimit(1)
                 }
 
@@ -97,8 +97,8 @@ struct BluetoothDeviceBrowserCard: View {
                         "Activa Bluetooth en tu iPhone para continuar."
                     )
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -107,8 +107,8 @@ struct BluetoothDeviceBrowserCard: View {
                     language.localized("Linked with", "Enlazado con") + " \(linked.name)",
                     systemImage: "checkmark.circle.fill"
                 )
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(.green)
+                .font(.poppins(.subheadline, .semibold))
+                .foregroundStyle(AppTheme.positive)
                 .lineLimit(2)
                 .fixedSize(horizontal: false, vertical: true)
             }
@@ -117,15 +117,15 @@ struct BluetoothDeviceBrowserCard: View {
                 HStack(spacing: 8) {
                     ProgressView()
                     Text(language.localized("Connecting...", "Conectando..."))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
 
             if let lastError = pairingService.lastError {
                 Text(lastError)
-                    .font(.caption)
-                    .foregroundStyle(.red)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.negative)
             }
 
             if let sample = pairingService.latestSample {
@@ -134,8 +134,8 @@ struct BluetoothDeviceBrowserCard: View {
                         language.localized("Sample detected", "Muestra detectada") + ": \(sample.displayValue)",
                         systemImage: "waveform.path.ecg"
                     )
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.blue)
+                    .font(.poppins(.subheadline, .semibold))
+                    .foregroundStyle(AppTheme.olive)
 
                     Text(
                         language.localized(
@@ -143,11 +143,11 @@ struct BluetoothDeviceBrowserCard: View {
                             "Se detectó un valor en vivo del dispositivo."
                         )
                     )
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                 }
                 .padding(10)
-                .background(Color.blue.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .background(AppTheme.olive.opacity(0.08), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
             } else if pairingService.connectedDevice != nil {
                 Text(
                     language.localized(
@@ -155,15 +155,15 @@ struct BluetoothDeviceBrowserCard: View {
                         "Conectado. Esperando una muestra de valor..."
                     )
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
             }
 
             if !pairingService.discoveredDevices.isEmpty {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(spacing: 8) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppTheme.inkSecondary)
 
                         TextField(
                             "",
@@ -189,16 +189,16 @@ struct BluetoothDeviceBrowserCard: View {
                             Spacer(minLength: 12)
 
                             Text(resultsSummaryText)
-                                .font(.caption.monospacedDigit())
-                                .foregroundStyle(.secondary)
+                                .font(.poppins(.caption).monospacedDigit())
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .lineLimit(1)
                         }
 
                         VStack(alignment: .leading, spacing: 8) {
                             filterControl
                             Text(resultsSummaryText)
-                                .font(.caption.monospacedDigit())
-                                .foregroundStyle(.secondary)
+                                .font(.poppins(.caption).monospacedDigit())
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .lineLimit(1)
                         }
                     }
@@ -212,8 +212,8 @@ struct BluetoothDeviceBrowserCard: View {
                         "Todavía no se encontraron dispositivos Bluetooth. Mantén el dispositivo en modo enlace y toca buscar."
                     )
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             } else if filteredDevices.isEmpty {
                 Text(
@@ -222,8 +222,8 @@ struct BluetoothDeviceBrowserCard: View {
                         "Ningún dispositivo coincide con los filtros actuales. Prueba otro nombre o muestra todos."
                     )
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)
             } else {
                 LazyVStack(spacing: 8) {
@@ -255,7 +255,7 @@ struct BluetoothDeviceBrowserCard: View {
                                 "Mostrar \(extraResultsCount) resultados más"
                             )
                         )
-                        .font(.caption.weight(.semibold))
+                        .font(.poppins(.caption, .semibold))
                     }
                     .buttonStyle(.plain)
                 }
@@ -285,8 +285,8 @@ struct BluetoothDeviceBrowserCard: View {
     private var filterControl: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(language.localized("Distance filter", "Filtro de distancia"))
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
 
             Picker(
                 language.localized("Distance filter", "Filtro de distancia"),
@@ -330,6 +330,7 @@ struct BluetoothDeviceBrowserCard: View {
 
         if pairingService.isScanning || !hasResults {
             button.buttonStyle(.borderedProminent)
+                .foregroundStyle(AppTheme.onBrand)
         } else {
             button.buttonStyle(.bordered)
         }
@@ -373,23 +374,34 @@ private struct BluetoothScanRow: View {
 
     private var proximityTint: Color {
         if device.rssi >= -55 {
-            return .green
+            return AppTheme.positive
         }
         if device.rssi >= -70 {
-            return .blue
+            return AppTheme.clay
         }
-        return .orange
+        return AppTheme.warning
+    }
+
+    /// Text version of `proximityTint`: the light amber and clay are too pale as small text.
+    private var proximityTextTint: Color {
+        if device.rssi >= -55 {
+            return AppTheme.positive
+        }
+        if device.rssi >= -70 {
+            return AppTheme.clayText
+        }
+        return AppTheme.warningText
     }
 
     var body: some View {
         HStack(spacing: 10) {
             Image(systemName: "sensor.tag.radiowaves.forward.fill")
-                .foregroundStyle(isLinked ? .green : .blue)
+                .foregroundStyle(isLinked ? AppTheme.positive : AppTheme.clay)
                 .frame(width: 22)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(device.name)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .lineLimit(1)
 
                 ViewThatFits(in: .horizontal) {
@@ -411,6 +423,7 @@ private struct BluetoothScanRow: View {
             Button(isLinked ? language.localized("Linked", "Enlazado") : language.localized("Link", "Enlazar")) {
                 onLink()
             }
+            .foregroundStyle(AppTheme.onBrand)
             .buttonStyle(.borderedProminent)
             .disabled(isLinked || isBusy)
         }
@@ -421,15 +434,15 @@ private struct BluetoothScanRow: View {
 
     private var deviceMetaText: some View {
         Text("\(signalText) | ID \(shortIdentifier)")
-            .font(.caption.monospacedDigit())
-            .foregroundStyle(.secondary)
+            .font(.poppins(.caption).monospacedDigit())
+            .foregroundStyle(AppTheme.inkSecondary)
             .lineLimit(1)
     }
 
     private var proximityBadge: some View {
         Text(proximityLabel)
-            .font(.caption2.weight(.semibold))
-            .foregroundStyle(proximityTint)
+            .font(.poppins(.caption2, .semibold))
+            .foregroundStyle(proximityTextTint)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(proximityTint.opacity(0.12), in: Capsule())

@@ -77,11 +77,20 @@ struct LandDetailView: View {
     }
 
     private var netMarginColor: Color {
-        land.annualNetMargin >= 0 ? .green : .red
+        land.annualNetMargin >= 0 ? AppTheme.positive : AppTheme.negative
+    }
+
+    /// Olive when the land is in profit, red when it loses money, so the sign of the annual net
+    /// margin still reads at a glance on the white figure (the +/- in the text stays as well).
+    /// Clay is reserved for actions.
+    private var financeHeroColors: [Color] {
+        land.annualNetMargin >= 0
+            ? [AppTheme.oliveFill, AppTheme.oliveDeepFill]
+            : [AppTheme.negativeFill, AppTheme.clayDeepFill]
     }
 
     private var mapAccentColor: Color {
-        canViewEconomics ? netMarginColor : Color.blue
+        canViewEconomics ? netMarginColor : AppTheme.olive
     }
 
     private var expenseRatioRaw: Double {
@@ -190,25 +199,25 @@ struct LandDetailView: View {
                 id: "irrigation",
                 title: language.localized("Irrigation", "Riego"),
                 amount: max(0, land.annualIrrigationCost),
-                color: Color(red: 0.16, green: 0.46, blue: 0.95)
+                color: AppTheme.olive
             ),
             ExpenseItem(
                 id: "fertilizer",
                 title: language.localized("Fertilizer", "Fertilizantes"),
                 amount: max(0, land.annualFertilizerCost),
-                color: Color(red: 0.22, green: 0.73, blue: 0.39)
+                color: AppTheme.warning
             ),
             ExpenseItem(
                 id: "labor",
                 title: language.localized("Labor", "Mano de obra"),
                 amount: max(0, land.annualLaborCost),
-                color: Color(red: 0.95, green: 0.58, blue: 0.20)
+                color: AppTheme.clay
             ),
             ExpenseItem(
                 id: "maintenance",
                 title: language.localized("Maintenance", "Mantenimiento"),
                 amount: max(0, land.annualMaintenanceCost),
-                color: Color(red: 0.89, green: 0.29, blue: 0.32)
+                color: AppTheme.highlight
             )
         ]
     }
@@ -386,21 +395,21 @@ struct LandDetailView: View {
     private func deviceTypeTint(_ type: LandDeviceType) -> Color {
         switch type {
         case .thermometer:
-            return Color(red: 0.18, green: 0.54, blue: 0.96)
+            return AppTheme.clay
         case .waterPump:
-            return Color(red: 0.06, green: 0.63, blue: 0.78)
+            return AppTheme.olive
         case .rainGauge:
-            return Color(red: 0.27, green: 0.57, blue: 0.92)
+            return AppTheme.oliveDeep
         case .humiditySensor:
-            return Color(red: 0.21, green: 0.70, blue: 0.46)
+            return AppTheme.wordmark
         case .pressureSensor:
-            return Color(red: 0.98, green: 0.62, blue: 0.18)
+            return AppTheme.warning
         case .energyMeter:
-            return Color(red: 0.96, green: 0.76, blue: 0.17)
+            return AppTheme.highlight
         case .inverter:
-            return Color(red: 0.93, green: 0.50, blue: 0.17)
+            return AppTheme.clayDeep
         case .other:
-            return Color(red: 0.55, green: 0.49, blue: 0.95)
+            return AppTheme.neutral
         }
     }
 
@@ -420,13 +429,13 @@ struct LandDetailView: View {
     private func linkMethodTint(_ method: LandDeviceLinkMethod) -> Color {
         switch method {
         case .bluetooth:
-            return Color(red: 0.18, green: 0.54, blue: 0.96)
+            return AppTheme.olive
         case .cloudAPI:
-            return Color(red: 0.33, green: 0.59, blue: 0.98)
+            return AppTheme.clay
         case .mqttGateway:
-            return Color(red: 0.20, green: 0.70, blue: 0.55)
+            return AppTheme.highlight
         case .manual:
-            return Color(red: 0.52, green: 0.52, blue: 0.58)
+            return AppTheme.neutral
         }
     }
 
@@ -454,11 +463,11 @@ struct LandDetailView: View {
             .padding(.bottom, 62)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .background(Color(.systemGroupedBackground))
         .overlay(alignment: .bottomLeading) {
             detailsFloatingButton
         }
         .clipped()
+        .background(AppBackground())
         .navigationTitle(land.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -653,11 +662,11 @@ struct LandDetailView: View {
                     SectionDisclosureLabel(
                         title: language.localized("Costs & Financials", "Costes y finanzas"),
                         systemImage: "eurosign.circle.fill",
-                        tint: Color(red: 0.86, green: 0.46, blue: 0.12)
+                        tint: AppTheme.clay
                     )
                 }
             )
-            .tint(Color(red: 0.86, green: 0.46, blue: 0.12))
+            .tint(AppTheme.clay)
         }
         .padding(16)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -684,11 +693,11 @@ struct LandDetailView: View {
                             ? language.localized("Field & Energy Operations", "Operación de campo y energía")
                             : language.localized("Field Operations", "Operación de campo"),
                         systemImage: "gearshape.2.fill",
-                        tint: Color(red: 0.09, green: 0.41, blue: 0.77)
+                        tint: AppTheme.olive
                     )
                 }
             )
-            .tint(Color(red: 0.09, green: 0.41, blue: 0.77))
+            .tint(AppTheme.olive)
         }
         .padding(16)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
@@ -730,11 +739,11 @@ struct LandDetailView: View {
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(projectLensTitle)
-                        .font(.headline.weight(.semibold))
+                        .font(.poppins(.headline, .semibold))
                         .foregroundStyle(.white)
 
                     Text(projectLensSubtitle)
-                        .font(.subheadline)
+                        .font(.poppins(.subheadline))
                         .foregroundStyle(.white.opacity(0.88))
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -748,7 +757,7 @@ struct LandDetailView: View {
                         ? language.localized("Footprint imported", "Huella importada")
                         : language.localized("Import REFCAT or geometry", "Importa REFCAT o geometría"),
                     systemImage: "map.fill",
-                    tint: Color(red: 0.16, green: 0.46, blue: 0.95)
+                    tint: AppTheme.olive
                 )
 
                 ProjectSignalTile(
@@ -758,7 +767,7 @@ struct LandDetailView: View {
                         ? language.localized("Historical entries", "Entradas históricas")
                         : language.localized("Create a baseline", "Crea una línea base"),
                     systemImage: "chart.line.uptrend.xyaxis",
-                    tint: Color(red: 0.19, green: 0.66, blue: 0.40)
+                    tint: AppTheme.clay
                 )
 
                 ProjectSignalTile(
@@ -768,7 +777,7 @@ struct LandDetailView: View {
                         ? language.localized("Linked devices", "Dispositivos enlazados")
                         : language.localized("Optional validation layer", "Capa de validación opcional"),
                     systemImage: "dot.radiowaves.left.and.right",
-                    tint: Color(red: 0.57, green: 0.46, blue: 0.92)
+                    tint: AppTheme.highlight
                 )
 
                 ProjectSignalTile(
@@ -784,12 +793,12 @@ struct LandDetailView: View {
                         )
                         : language.localized("Enable via activity type", "Actívala desde la actividad"),
                     systemImage: "bolt.fill",
-                    tint: Color(red: 0.86, green: 0.46, blue: 0.12)
+                    tint: AppTheme.warning
                 )
             }
 
             Text(projectLensFooter)
-                .font(.caption)
+                .font(.poppins(.caption))
                 .foregroundStyle(.white.opacity(0.88))
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -798,8 +807,8 @@ struct LandDetailView: View {
         .background(
             LinearGradient(
                 colors: [
-                    Color(red: 0.10, green: 0.31, blue: 0.58),
-                    Color(red: 0.17, green: 0.53, blue: 0.39)
+                    AppTheme.oliveFill,
+                    AppTheme.oliveDeepFill
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
@@ -815,12 +824,12 @@ struct LandDetailView: View {
     private var financeHeroCard: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(language.localized("Annual Net Margin", "Margen neto anual"))
-                .font(.subheadline.weight(.medium))
-                .foregroundStyle(.white.opacity(0.72))
+                .font(.poppins(.subheadline, .medium))
+                .foregroundStyle(.white.opacity(0.9))
 
             Text(signedCurrency(land.annualNetMargin))
-                .font(.system(size: 34, weight: .bold, design: .rounded))
-                .foregroundStyle(netMarginColor)
+                .font(.poppins(size: 34, .bold, relativeTo: .largeTitle))
+                .foregroundStyle(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
 
@@ -829,39 +838,36 @@ struct LandDetailView: View {
                     title: language.localized("Income", "Ingresos"),
                     value: formattedIncome,
                     icon: "arrow.down.circle.fill",
-                    tint: .green
+                    tint: AppTheme.positive
                 )
                 FinanceStatTile(
                     title: language.localized("Expenses", "Gastos"),
                     value: formattedTotalExpenses,
                     icon: "arrow.up.circle.fill",
-                    tint: .red
+                    tint: AppTheme.negative
                 )
             }
 
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Text(language.localized("Expense Ratio", "Ratio de gasto"))
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.white.opacity(0.72))
+                        .font(.poppins(.caption, .semibold))
+                        .foregroundStyle(.white.opacity(0.9))
                     Spacer()
                     Text(expenseRatioText)
-                        .font(.caption.weight(.bold))
+                        .font(.poppins(.caption, .bold))
                         .foregroundStyle(.white.opacity(0.92))
                 }
 
                 ProgressView(value: expenseRatioProgress)
-                    .tint(Color(red: 0.95, green: 0.45, blue: 0.26))
+                    .tint(.white)
             }
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             LinearGradient(
-                colors: [
-                    Color(red: 0.07, green: 0.09, blue: 0.15),
-                    Color(red: 0.12, green: 0.15, blue: 0.22)
-                ],
+                colors: financeHeroColors,
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
@@ -877,21 +883,21 @@ struct LandDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(language.localized("Performance Timeline", "Evolución temporal"))
-                    .font(.headline)
+                    .font(.poppins(.headline))
                 Spacer()
                 Button {
                     showingCreateHistoryEditor = true
                 } label: {
                     Label(language.localized("Add", "Añadir"), systemImage: "plus")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                 }
                 .buttonStyle(.bordered)
             }
 
             if historyEntriesAscending.isEmpty {
                 Text(language.localized("Add monthly records to visualize trends of income, production and energy.", "Añade registros mensuales para visualizar tendencias de ingresos, producción y energía."))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline))
+                    .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 Picker(
                     language.localized("Metric", "Métrica"),
@@ -933,7 +939,7 @@ struct LandDetailView: View {
                 }
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: min(6, chartEntries.count))) { value in
-                        AxisGridLine().foregroundStyle(.secondary.opacity(0.22))
+                        AxisGridLine().foregroundStyle(AppTheme.inkSecondary.opacity(0.22))
                         AxisValueLabel(format: .dateTime.month(.abbreviated).year(.defaultDigits))
                     }
                 }
@@ -960,8 +966,8 @@ struct LandDetailView: View {
 
                 if historyEntriesDescending.count > 6 {
                     Text(language.localized("Showing latest 6 records", "Mostrando los últimos 6 registros"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
         }
@@ -976,14 +982,14 @@ struct LandDetailView: View {
                 OperationCardHeader(
                     title: language.localized("Tasks & Reminders", "Tareas y recordatorios"),
                     systemImage: "calendar",
-                    tint: Color(red: 0.08, green: 0.35, blue: 0.72)
+                    tint: AppTheme.olive
                 )
                 Spacer()
                 Button {
                     showingCreateTaskEditor = true
                 } label: {
                     Label(language.localized("Add", "Añadir"), systemImage: "plus")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                 }
                 .buttonStyle(.bordered)
             }
@@ -1000,8 +1006,8 @@ struct LandDetailView: View {
                         "Crea tareas para riego, poda, cosecha y mantenimiento de paneles/inversores."
                     )
                 )
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 Picker(language.localized("Filter", "Filtro"), selection: $selectedTaskFilter) {
                     ForEach(LandTaskFilter.allCases) { filter in
@@ -1012,8 +1018,8 @@ struct LandDetailView: View {
 
                 if filteredTasks.isEmpty {
                     Text(selectedTaskFilter.emptyState(language: language))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.subheadline))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 } else {
                     VStack(spacing: 10) {
                         ForEach(filteredTasks) { task in
@@ -1048,7 +1054,7 @@ struct LandDetailView: View {
                 OperationCardHeader(
                     title: language.localized("Installed Devices", "Dispositivos instalados"),
                     systemImage: "dot.radiowaves.left.and.right",
-                    tint: .green
+                    tint: AppTheme.positive
                 )
                 Spacer()
                 if !devices.isEmpty {
@@ -1072,8 +1078,8 @@ struct LandDetailView: View {
                     ": " +
                     telemetryLastSyncAt.formatted(date: .omitted, time: .shortened)
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
             }
 
             if canManageStructure {
@@ -1087,10 +1093,10 @@ struct LandDetailView: View {
 
                         VStack(alignment: .leading, spacing: 2) {
                             Text(language.localized("Pairing Assistant", "Asistente de enlazamiento"))
-                                .font(.subheadline.weight(.semibold))
+                                .font(.poppins(.subheadline, .semibold))
                                 .foregroundStyle(.white)
                             Text(language.localized("Recommended for easy setup", "Recomendado para configuración fácil"))
-                                .font(.caption)
+                                .font(.poppins(.caption))
                                 .foregroundStyle(.white.opacity(0.9))
                         }
 
@@ -1104,8 +1110,8 @@ struct LandDetailView: View {
                     .background(
                         LinearGradient(
                             colors: [
-                                Color(red: 0.07, green: 0.46, blue: 0.87),
-                                Color(red: 0.12, green: 0.67, blue: 0.50)
+                                AppTheme.clayFill,
+                                AppTheme.clayDeepFill
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
@@ -1131,8 +1137,8 @@ struct LandDetailView: View {
                         : language.localized("New Device", "Nuevo dispositivo"),
                         systemImage: showingDeviceComposer ? "xmark.circle.fill" : "plus.circle.fill"
                     )
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(showingDeviceComposer ? Color.secondary : Color.blue)
+                    .font(.poppins(.subheadline, .semibold))
+                    .foregroundStyle(showingDeviceComposer ? AppTheme.inkSecondary : AppTheme.olive)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
@@ -1160,8 +1166,8 @@ struct LandDetailView: View {
                         "Aún no hay dispositivos registrados. Añade termómetros, bombas de agua, pluviómetros y sensores."
                     )
                 )
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 VStack(spacing: 10) {
                     ForEach(devices) { device in
@@ -1200,8 +1206,8 @@ struct LandDetailView: View {
                 Spacer()
 
                 Text("\(deviceComposerStepIndex + 1)/\(deviceComposerSteps.count)")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
 
             TabView(selection: $deviceComposerStep) {
@@ -1237,7 +1243,8 @@ struct LandDetailView: View {
                         addDevice()
                     } label: {
                         Label(language.localized("Add Device", "Añadir dispositivo"), systemImage: "checkmark.circle.fill")
-                            .font(.subheadline.weight(.semibold))
+                            .font(.poppins(.subheadline, .semibold))
+                            .foregroundStyle(AppTheme.onBrand)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(!canAddDevice)
@@ -1245,6 +1252,7 @@ struct LandDetailView: View {
                     Button(language.localized("Next", "Siguiente")) {
                         moveDeviceComposer(by: 1)
                     }
+                    .foregroundStyle(AppTheme.onBrand)
                     .buttonStyle(.borderedProminent)
                     .disabled(!canAdvanceFromCurrentDeviceComposerStep)
                 }
@@ -1259,7 +1267,7 @@ struct LandDetailView: View {
     }
 
     private var deviceComposerAccentColor: Color {
-        Color(uiColor: .systemGray2)
+        AppTheme.neutral
     }
 
     private var deviceComposerNamePage: some View {
@@ -1351,8 +1359,8 @@ struct LandDetailView: View {
                     ? language.localized("The summary is ready, but one Bluetooth device still needs to be linked before adding it.", "El resumen ya está listo, pero todavía hay que enlazar un dispositivo Bluetooth antes de añadirlo.")
                     : language.localized("Complete the pending fields before adding the device.", "Completa los campos pendientes antes de añadir el dispositivo.")
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
             }
         }
     }
@@ -1395,17 +1403,17 @@ struct LandDetailView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(label)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(AppTheme.inkSecondary)
                 Text(value)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
             }
 
             Spacer(minLength: 0)
         }
         .padding(12)
-        .background(Color.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(AppTheme.card.opacity(0.62), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(Color.primary.opacity(0.08), lineWidth: 1)
@@ -1442,10 +1450,10 @@ struct LandDetailView: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
 
@@ -1463,14 +1471,14 @@ struct LandDetailView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 Text(language.localized("Expense Breakdown", "Desglose de gastos"))
-                    .font(.headline)
+                    .font(.poppins(.headline))
                 Spacer()
                 if roleAccessViewModel.canManageExpenses {
                     Button {
                         showingExpenseEditor = true
                     } label: {
                         Label(language.localized("Update", "Actualizar"), systemImage: "pencil")
-                            .font(.subheadline.weight(.semibold))
+                            .font(.poppins(.subheadline, .semibold))
                     }
                     .buttonStyle(.bordered)
                 }
@@ -1478,8 +1486,8 @@ struct LandDetailView: View {
 
             if land.annualTotalExpenses <= 0 {
                 Text(language.localized("No expenses registered yet", "Aún no hay gastos registrados"))
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline))
+                    .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 ForEach(expenseItems) { item in
                     ExpenseBarRow(
@@ -1501,7 +1509,7 @@ struct LandDetailView: View {
             OperationCardHeader(
                 title: language.localized("Energy Layer", "Capa energética"),
                 systemImage: "bolt.circle.fill",
-                tint: .orange
+                tint: AppTheme.warning
             )
 
             FinanceDetailRow(label: language.localized("Installed Capacity", "Potencia instalada"), value: formattedCapacity)
@@ -1519,7 +1527,7 @@ struct LandDetailView: View {
             showingDetailsSheet = true
         } label: {
             Label(language.localized("Project Info", "Ficha"), systemImage: "info.circle.fill")
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
                 .foregroundStyle(.primary)
@@ -1539,7 +1547,7 @@ struct LandDetailView: View {
             VStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(language.localized("Project Profile", "Perfil del proyecto"))
-                        .font(.headline)
+                        .font(.poppins(.headline))
 
                     FinanceDetailRow(label: language.localized("Activity", "Actividad"), value: localizedActivityType)
                     FinanceDetailRow(label: language.localized("Production", "Producción"), value: localizedProductionType)
@@ -1558,7 +1566,7 @@ struct LandDetailView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(language.localized("Project Context", "Contexto del proyecto"))
-                        .font(.headline)
+                        .font(.poppins(.headline))
 
                     FinanceDetailRow(label: language.localized("Size", "Superficie"), value: formattedSize)
                     FinanceDetailRow(label: language.localized("Location", "Ubicación"), value: land.locationText)
@@ -1574,7 +1582,7 @@ struct LandDetailView: View {
                 if hasCadastreInfo {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(language.localized("Project Geometry", "Geometría del proyecto"))
-                            .font(.headline)
+                            .font(.poppins(.headline))
 
                         if let refcat = land.catastroRefcat14 {
                             FinanceDetailRow(label: "REFCAT", value: refcat)
@@ -1603,7 +1611,7 @@ struct LandDetailView: View {
             }
             .padding(16)
         }
-        .background(Color(.systemGroupedBackground))
+        .background(AppBackground())
         .navigationTitle(language.localized("Project Details", "Detalles del proyecto"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -1633,10 +1641,10 @@ struct LandDetailView: View {
     private var notesCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(language.localized("Project Notes", "Notas del proyecto"))
-                .font(.headline)
+                .font(.poppins(.headline))
             Text(land.notes)
-                .font(.body)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.body))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -2055,11 +2063,11 @@ private enum TimelineMetric: String, CaseIterable, Identifiable {
     var tint: Color {
         switch self {
         case .income:
-            return .green
+            return AppTheme.olive
         case .production:
-            return .orange
+            return AppTheme.clay
         case .electricity:
-            return .blue
+            return AppTheme.highlight
         }
     }
 }
@@ -2142,9 +2150,9 @@ private struct LandTaskRow: View {
 
     private var dueColor: Color {
         if task.isCompleted {
-            return .secondary
+            return AppTheme.inkSecondary
         }
-        return isOverdue ? .red : .secondary
+        return isOverdue ? AppTheme.negative : AppTheme.inkSecondary
     }
 
     var body: some View {
@@ -2153,7 +2161,7 @@ private struct LandTaskRow: View {
                 Button(action: onToggleComplete) {
                     Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
                         .font(.title3)
-                        .foregroundStyle(task.isCompleted ? .green : .secondary)
+                        .foregroundStyle(task.isCompleted ? AppTheme.positive : AppTheme.inkSecondary)
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(
@@ -2164,25 +2172,25 @@ private struct LandTaskRow: View {
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(task.title)
-                        .font(.subheadline.weight(.semibold))
-                        .strikethrough(task.isCompleted, color: .secondary)
+                        .font(.poppins(.subheadline, .semibold))
+                        .strikethrough(task.isCompleted, color: AppTheme.inkSecondary)
 
                     HStack(spacing: 8) {
                         Label(task.type.displayName(language: language), systemImage: task.type.symbolName)
-                            .font(.caption)
+                            .font(.poppins(.caption))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Color.primary.opacity(0.08), in: Capsule())
 
                         Label(dueDateText, systemImage: "calendar")
-                            .font(.caption)
+                            .font(.poppins(.caption))
                             .foregroundStyle(dueColor)
                     }
 
                     if let reminderText {
                         Label(reminderText, systemImage: "bell")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
                 }
 
@@ -2194,15 +2202,15 @@ private struct LandTaskRow: View {
                 } label: {
                     Image(systemName: "ellipsis.circle")
                         .font(.title3)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
                 .accessibilityLabel(language.localized("More options", "Más opciones"))
             }
 
             if !notesText.isEmpty {
                 Text(notesText)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
         }
         .padding(12)
@@ -2290,7 +2298,7 @@ private struct TaskMiniCalendarView: View {
                             .year()
                     )
                 )
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
 
                 Spacer()
 
@@ -2301,13 +2309,13 @@ private struct TaskMiniCalendarView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .foregroundStyle(.secondary)
+            .foregroundStyle(AppTheme.inkSecondary)
 
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6), count: 7), spacing: 8) {
                 ForEach(weekdaySymbols, id: \.self) { weekday in
                     Text(weekday)
-                        .font(.system(size: 11, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(size: 11, .semibold, relativeTo: .caption2))
+                        .foregroundStyle(AppTheme.inkSecondary)
                         .lineLimit(1)
                         .minimumScaleFactor(0.7)
                         .frame(maxWidth: .infinity, minHeight: 18)
@@ -2334,8 +2342,8 @@ private struct TaskMiniCalendarView: View {
                     "No hay elementos programados este mes"
                 )
             )
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.caption))
+            .foregroundStyle(AppTheme.inkSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(12)
@@ -2348,12 +2356,12 @@ private struct TaskMiniCalendarView: View {
         let key = calendar.startOfDay(for: date)
         let isToday = calendar.isDateInToday(date)
         let hasEvent = (eventsByDay[key] ?? 0) > 0
-        let todayBlue = Color(red: 0.08, green: 0.35, blue: 0.72)
+        let todayColor = AppTheme.oliveFill
 
         ZStack {
             if isToday {
                 Circle()
-                    .fill(todayBlue)
+                    .fill(todayColor)
                     .frame(width: 30, height: 30)
             } else if hasEvent {
                 Circle()
@@ -2366,7 +2374,7 @@ private struct TaskMiniCalendarView: View {
             }
 
             Text("\(day)")
-                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                .font(.poppins(size: 13, .semibold, relativeTo: .footnote))
                 .foregroundStyle(isToday ? .white : (hasEvent ? Color.accentColor : Color.primary))
 
             if hasEvent {
@@ -2438,16 +2446,16 @@ private struct LandDeviceRow: View {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: device.type.symbolName)
                     .font(.title3.weight(.semibold))
-                    .foregroundStyle(device.isActive ? Color.accentColor : .secondary)
+                    .foregroundStyle(device.isActive ? Color.accentColor : AppTheme.inkSecondary)
                     .frame(width: 28, height: 28)
 
                 VStack(alignment: .leading, spacing: 6) {
                     Text(device.name)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
 
                     HStack(spacing: 8) {
                         Label(typeLabel, systemImage: "dot.radiowaves.left.and.right")
-                            .font(.caption)
+                            .font(.poppins(.caption))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(Color.primary.opacity(0.08), in: Capsule())
@@ -2458,34 +2466,34 @@ private struct LandDeviceRow: View {
                             : language.localized("Inactive", "Inactivo"),
                             systemImage: device.isActive ? "checkmark.circle.fill" : "pause.circle.fill"
                         )
-                        .font(.caption)
-                        .foregroundStyle(device.isActive ? .green : .secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(device.isActive ? AppTheme.positive : AppTheme.inkSecondary)
                     }
 
                     HStack(spacing: 8) {
                         Label(linkMethodText, systemImage: device.linkMethod.symbolName)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
 
                         Label(intervalText, systemImage: "timer")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
 
                     if let readingText {
                         Label(readingText, systemImage: "waveform.path.ecg")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
 
                     Label(installedText, systemImage: "calendar")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
 
                     if let lastSeenText {
                         Label(lastSeenText, systemImage: "dot.radiowaves.left.and.right")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
                 }
 
@@ -2497,7 +2505,7 @@ private struct LandDeviceRow: View {
                     } label: {
                         Image(systemName: "ellipsis.circle")
                             .font(.title3)
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
                     .accessibilityLabel(language.localized("More options", "Más opciones"))
                 }
@@ -2505,8 +2513,8 @@ private struct LandDeviceRow: View {
 
             if !trimmedNotes.isEmpty {
                 Text(trimmedNotes)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
         }
         .padding(12)
@@ -2528,7 +2536,7 @@ private struct OperationCardHeader: View {
                 .background(tint.opacity(0.16), in: RoundedRectangle(cornerRadius: 7, style: .continuous))
 
             Text(title)
-                .font(.headline)
+                .font(.poppins(.headline))
         }
     }
 }
@@ -2547,7 +2555,7 @@ private struct SectionDisclosureLabel: View {
                 .background(tint.opacity(0.18), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
 
             Text(title)
-                .font(.headline.weight(.semibold))
+                .font(.poppins(.headline, .semibold))
                 .foregroundStyle(tint)
         }
     }
@@ -2568,7 +2576,7 @@ private struct DeviceFormField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Label(label, systemImage: systemImage)
-                .font(.caption.weight(.semibold))
+                .font(.poppins(.caption, .semibold))
                 .foregroundStyle(tint)
 
             HStack(spacing: 12) {
@@ -2582,12 +2590,13 @@ private struct DeviceFormField: View {
                     )
 
                 TextField(placeholder, text: $text)
+                    .font(.poppins(.body))
                     .keyboardType(keyboardType)
 
                 if isFilled {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(.green)
+                        .foregroundStyle(AppTheme.positive)
                         .transition(.opacity.combined(with: .scale(scale: 0.85)))
                 }
             }
@@ -2637,7 +2646,7 @@ private struct TagPill: View {
 
     var body: some View {
         Text(text)
-            .font(.caption.weight(.semibold))
+            .font(.poppins(.caption, .semibold))
             .lineLimit(1)
             .padding(.horizontal, 10)
             .padding(.vertical, 5)
@@ -2656,24 +2665,24 @@ private struct ProjectSignalTile: View {
         VStack(alignment: .leading, spacing: 8) {
             Image(systemName: systemImage)
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(tint)
+                .foregroundStyle(.white)
                 .frame(width: 34, height: 34)
                 .background(Color.white.opacity(0.16), in: RoundedRectangle(cornerRadius: 11, style: .continuous))
 
             Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.white.opacity(0.76))
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(.white.opacity(0.92))
                 .lineLimit(1)
 
             Text(value)
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
                 .foregroundStyle(.white)
                 .lineLimit(2)
                 .minimumScaleFactor(0.82)
 
             Text(subtitle)
-                .font(.caption2)
-                .foregroundStyle(.white.opacity(0.78))
+                .font(.poppins(.caption2))
+                .foregroundStyle(.white.opacity(0.9))
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(12)
@@ -2695,11 +2704,11 @@ private struct FinanceStatTile: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Label(title, systemImage: icon)
-                .font(.caption)
-                .foregroundStyle(.white.opacity(0.72))
+                .font(.poppins(.caption))
+                .foregroundStyle(.white.opacity(0.9))
             Text(value)
-                .font(.subheadline.weight(.semibold))
-                .foregroundStyle(tint)
+                .font(.poppins(.subheadline, .semibold))
+                .foregroundStyle(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
         }
@@ -2719,11 +2728,11 @@ private struct ExpenseBarRow: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(title)
-                    .font(.subheadline)
+                    .font(.poppins(.subheadline))
                 Spacer()
                 Text(amountText)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline, .semibold))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
 
             GeometryReader { geometry in
@@ -2749,11 +2758,11 @@ private struct FinanceDetailRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 10) {
             Text(label)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
             Spacer(minLength: 8)
             Text(value)
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
                 .multilineTextAlignment(.trailing)
         }
     }
@@ -2775,7 +2784,7 @@ private struct HistoryEntryRow: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text(periodText.capitalized)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                 Spacer()
                 if isEditable {
                     HStack(spacing: 6) {
@@ -2795,11 +2804,11 @@ private struct HistoryEntryRow: View {
                     }
                 } else {
                     Text("Excel")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.blue)
+                        .font(.poppins(.caption, .semibold))
+                        .foregroundStyle(AppTheme.olive)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
-                        .background(Color.blue.opacity(0.12), in: Capsule())
+                        .background(AppTheme.olive.opacity(0.12), in: Capsule())
                 }
             }
 
@@ -2807,17 +2816,17 @@ private struct HistoryEntryRow: View {
                 MetricPill(
                     title: language.localized("Income", "Ingresos"),
                     value: entry.incomeAmount.formatted(.currency(code: currencyCode)),
-                    tint: .green
+                    tint: AppTheme.olive
                 )
                 MetricPill(
                     title: language.localized("Production", "Producción"),
                     value: "\(entry.productionAmount.formatted(.number.precision(.fractionLength(2)))) \(entry.productionUnit)",
-                    tint: .orange
+                    tint: AppTheme.clay
                 )
                 MetricPill(
                     title: language.localized("Electricity", "Electricidad"),
                     value: "\(entry.electricityKWh.formatted(.number.precision(.fractionLength(0)))) kWh",
-                    tint: .blue
+                    tint: AppTheme.highlight
                 )
             }
         }
@@ -2834,10 +2843,10 @@ private struct MetricPill: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption2))
+                .foregroundStyle(AppTheme.inkSecondary)
             Text(value)
-                .font(.caption.weight(.semibold))
+                .font(.poppins(.caption, .semibold))
                 .lineLimit(1)
                 .minimumScaleFactor(0.75)
                 .foregroundStyle(tint)

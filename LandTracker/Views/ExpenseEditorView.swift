@@ -37,7 +37,7 @@ struct ExpenseEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(language.localized("Annual Expenses", "Gastos anuales")) {
+                Section {
                     TextField(language.localized("Irrigation", "Riego"), value: $irrigationCost, format: .currency(code: currencyCode))
                         .keyboardType(.decimalPad)
                     TextField(language.localized("Fertilizer", "Fertilizantes"), value: $fertilizerCost, format: .currency(code: currencyCode))
@@ -49,10 +49,16 @@ struct ExpenseEditorView: View {
 
                     LabeledContent(language.localized("Total", "Total")) {
                         Text(totalExpenses, format: .currency(code: currencyCode))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(AppTheme.inkSecondary)
                     }
+                } header: {
+                    AppSectionHeader(language.localized("Annual Expenses", "Gastos anuales"))
                 }
+                .listRowBackground(AppTheme.card)
             }
+            .font(.poppins(.body))
+            .scrollContentBackground(.hidden)
+            .background(AppBackground())
             .navigationTitle(language.localized("Update Expenses", "Actualizar gastos"))
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

@@ -131,7 +131,7 @@ struct LandEditorView: View {
                 .padding(.bottom, 28)
             }
             .scrollBounceBehavior(.basedOnSize)
-            .background(Color(.systemGroupedBackground))
+            .background(AppBackground())
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -185,12 +185,12 @@ struct LandEditorView: View {
             title: "",
             subtitle: "",
             systemImage: "leaf.circle.fill",
-            tint: Color(red: 0.21, green: 0.68, blue: 0.43)
+            tint: AppTheme.positive
         ) {
             editorFieldShell(
                 label: language.localized("Land name", "Nombre del terreno"),
                 systemImage: "character.textbox",
-                tint: .blue
+                tint: AppTheme.olive
             ) {
                 TextField(
                     language.localized("Example: South orchard", "Ejemplo: Huerto sur"),
@@ -264,34 +264,34 @@ struct LandEditorView: View {
             title: language.localized("Electric Generation", "Generación eléctrica"),
             subtitle: language.localized("Only visible when the selected land type supports energy production.", "Solo aparece cuando el tipo de terreno seleccionado admite producción energética."),
             systemImage: "bolt.circle.fill",
-            tint: Color(red: 0.95, green: 0.71, blue: 0.16)
+            tint: AppTheme.warning
         ) {
             LazyVGrid(columns: metricGridColumns, spacing: 12) {
                 editorMetricField(
                     label: language.localized("Installed Capacity (kW)", "Potencia instalada (kW)"),
                     systemImage: "bolt.fill",
-                    tint: Color(red: 0.97, green: 0.76, blue: 0.16),
+                    tint: AppTheme.warning,
                     value: $installedCapacityKW
                 )
 
                 editorMetricField(
                     label: language.localized("Electricity Production (kWh/year)", "Producción eléctrica (kWh/año)"),
                     systemImage: "gauge.with.dots.needle.50percent",
-                    tint: Color(red: 0.25, green: 0.55, blue: 0.95),
+                    tint: AppTheme.olive,
                     value: $annualElectricityProductionKWh
                 )
 
                 editorMetricField(
                     label: language.localized("Self Consumption (%)", "Autoconsumo (%)"),
                     systemImage: "house.fill",
-                    tint: Color(red: 0.22, green: 0.72, blue: 0.46),
+                    tint: AppTheme.highlight,
                     value: $selfConsumptionRate
                 )
 
                 editorMetricField(
                     label: language.localized("Grid Export (%)", "Vertido a red (%)"),
                     systemImage: "arrow.up.forward.circle.fill",
-                    tint: Color(red: 0.96, green: 0.49, blue: 0.18),
+                    tint: AppTheme.clay,
                     value: $gridExportRate
                 )
             }
@@ -319,8 +319,8 @@ struct LandEditorView: View {
                     "Primero elige una familia amplia, como hortalizas, frutales o cereales."
                 )
             )
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.caption))
+            .foregroundStyle(AppTheme.inkSecondary)
 
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 10) {
@@ -357,8 +357,8 @@ struct LandEditorView: View {
                         "Selecciona primero un grupo de cultivo para ver las opciones compatibles."
                     )
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 10) {
@@ -384,7 +384,7 @@ struct LandEditorView: View {
     }
 
     private var groupSelectionSection: some View {
-        let groupTint = Color(red: 0.54, green: 0.45, blue: 0.93)
+        let groupTint = AppTheme.highlight
 
         return VStack(alignment: .leading, spacing: 10) {
             sectionLabel(
@@ -400,15 +400,16 @@ struct LandEditorView: View {
             } label: {
                 HStack(spacing: 10) {
                     Text(selectedGroup?.name ?? language.localized("No group selected", "Ningún grupo seleccionado"))
+                        .font(.poppins(.body))
                         .lineLimit(1)
                         .truncationMode(.tail)
-                        .foregroundStyle(selectedGroup == nil ? .secondary : .primary)
+                        .foregroundStyle(selectedGroup == nil ? AppTheme.inkSecondary : Color.primary)
 
                     Spacer()
 
                     Image(systemName: "chevron.up.chevron.down")
                         .font(.caption.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
@@ -424,7 +425,7 @@ struct LandEditorView: View {
             HStack(spacing: 10) {
                 if let selectedGroup {
                     Text(selectedGroup.name)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                         .foregroundStyle(groupTint)
                         .lineLimit(1)
                         .padding(.horizontal, 14)
@@ -436,7 +437,7 @@ struct LandEditorView: View {
                     showingNewGroup = true
                 } label: {
                     Text(language.localized("New Group", "Nuevo grupo"))
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                 }
                 .buttonStyle(.bordered)
                 .tint(groupTint)
@@ -446,7 +447,7 @@ struct LandEditorView: View {
     }
 
     private var groupPickerOverlay: some View {
-        let groupTint = Color(red: 0.54, green: 0.45, blue: 0.93)
+        let groupTint = AppTheme.highlight
 
         return ZStack(alignment: .bottom) {
             Color.black.opacity(0.14)
@@ -489,12 +490,12 @@ struct LandEditorView: View {
             title: language.localized("Catastro (Spain)", "Catastro (España)"),
             subtitle: language.localized("Fetch parcel geometry and metadata directly from the cadastral reference.", "Obtén la geometría y los metadatos de la parcela directamente desde la referencia catastral."),
             systemImage: "map.circle.fill",
-            tint: Color(red: 0.14, green: 0.56, blue: 0.96)
+            tint: AppTheme.olive
         ) {
             editorFieldShell(
                 label: language.localized("REFCAT (14 chars)", "REFCAT (14 caracteres)"),
                 systemImage: "number",
-                tint: Color(red: 0.14, green: 0.56, blue: 0.96)
+                tint: AppTheme.olive
             ) {
                 TextField("", text: $catastroRefcat14)
                     .textInputAutocapitalization(.characters)
@@ -505,27 +506,32 @@ struct LandEditorView: View {
                 HStack(spacing: 10) {
                     ProgressView()
                     Text(language.localized("Fetching parcel...", "Obteniendo parcela..."))
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.subheadline))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 Button {
                     Task { await fetchCatastro() }
                 } label: {
-                    Label(language.localized("Fetch Parcel", "Buscar parcela"), systemImage: "arrow.down.circle.fill")
-                        .font(.subheadline.weight(.semibold))
-                        .frame(maxWidth: .infinity)
+                    Label {
+                        Text(language.localized("Fetch Parcel", "Buscar parcela"))
+                            .font(.poppins(.subheadline, .semibold))
+                    } icon: {
+                        Image(systemName: "arrow.down.circle.fill")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    .foregroundStyle(AppTheme.onBrand)
+                    .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.14, green: 0.56, blue: 0.96))
                 .disabled(catastroRefcat14.trimmingCharacters(in: .whitespacesAndNewlines).count != 14)
             }
 
             if let catastroError {
                 Text(catastroError)
-                    .font(.caption)
-                    .foregroundStyle(.red)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.negative)
             }
 
             if catastroLabel != nil || catastroAreaValue != nil || !catastroRings.isEmpty {
@@ -550,7 +556,7 @@ struct LandEditorView: View {
                 "Busca una dirección o toca el mapa para fijar la posición de este terreno manualmente."
             ),
             systemImage: "mappin.circle.fill",
-            tint: Color(red: 0.86, green: 0.23, blue: 0.27)
+            tint: AppTheme.clay
         ) {
             LandLocationPickerCard(latitude: $latitude, longitude: $longitude, language: language)
         }
@@ -563,7 +569,7 @@ struct LandEditorView: View {
                 title: language.localized("Label", "Etiqueta"),
                 value: catastroLabel,
                 systemImage: "tag.fill",
-                colors: [Color(red: 0.08, green: 0.46, blue: 0.88), Color(red: 0.14, green: 0.56, blue: 0.96)]
+                colors: [AppTheme.oliveFill, AppTheme.oliveDeepFill]
             )
         }
 
@@ -572,7 +578,7 @@ struct LandEditorView: View {
                 title: language.localized("Area", "Superficie"),
                 value: catastroAreaValue.formatted(.number.precision(.fractionLength(2))) + " " + (catastroAreaUom ?? ""),
                 systemImage: "square.expand",
-                colors: [Color(red: 0.95, green: 0.65, blue: 0.18), Color(red: 0.90, green: 0.42, blue: 0.28)]
+                colors: [AppTheme.clayFill, AppTheme.clayDeepFill]
             )
         }
     }
@@ -814,13 +820,13 @@ struct LandEditorView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         if !title.isEmpty {
                             Text(title)
-                                .font(.headline.weight(.semibold))
+                                .font(.poppins(.headline, .semibold))
                         }
 
                         if !subtitle.isEmpty {
                             Text(subtitle)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(.poppins(.caption))
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
@@ -853,6 +859,7 @@ struct LandEditorView: View {
             sectionLabel(label, systemImage: systemImage, tint: tint)
 
             content()
+                .font(.poppins(.body))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -876,6 +883,7 @@ struct LandEditorView: View {
 
             TextField("", value: value, format: .number.precision(.fractionLength(2)))
                 .keyboardType(.decimalPad)
+                .font(.poppins(.body))
                 .padding(.horizontal, 14)
                 .padding(.vertical, 12)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -889,9 +897,14 @@ struct LandEditorView: View {
 
     @ViewBuilder
     private func sectionLabel(_ text: String, systemImage: String, tint: Color) -> some View {
-        Label(text, systemImage: systemImage)
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(tint)
+        Label {
+            Text(text)
+                .font(.poppins(.caption, .semibold))
+        } icon: {
+            Image(systemName: systemImage)
+                .font(.caption.weight(.semibold))
+        }
+        .foregroundStyle(tint)
     }
 
     private func activitySymbol(for type: String) -> String {
@@ -916,19 +929,19 @@ struct LandEditorView: View {
     private func activityTint(for type: String) -> Color {
         switch type {
         case ActivityCatalog.agricultural:
-            return Color(red: 0.20, green: 0.66, blue: 0.39)
+            return AppTheme.positive
         case ActivityCatalog.agrovoltaic:
-            return Color(red: 0.16, green: 0.54, blue: 0.93)
+            return AppTheme.highlight
         case ActivityCatalog.electricGeneration:
-            return Color(red: 0.96, green: 0.66, blue: 0.16)
+            return AppTheme.warning
         case "Livestock":
-            return Color(red: 0.78, green: 0.43, blue: 0.24)
+            return AppTheme.clay
         case "Forestry":
-            return Color(red: 0.17, green: 0.55, blue: 0.31)
+            return AppTheme.oliveDeep
         case "Mixed Use":
-            return Color(red: 0.51, green: 0.47, blue: 0.90)
+            return AppTheme.neutral
         default:
-            return Color(red: 0.08, green: 0.46, blue: 0.88)
+            return AppTheme.olive
         }
     }
 
@@ -972,7 +985,7 @@ struct LandEditorView: View {
             return Color(hex: item.colorHex)
         }
 
-        return Color(red: 0.17, green: 0.63, blue: 0.40)
+        return AppTheme.positive
     }
 }
 
@@ -989,16 +1002,21 @@ private struct GroupPickerGlassSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 12) {
-                Label(language.localized("Assign group", "Asignar grupo"), systemImage: "person.3.sequence.fill")
-                    .font(.headline.weight(.semibold))
-                    .foregroundStyle(.primary)
+                Label {
+                    Text(language.localized("Assign group", "Asignar grupo"))
+                        .font(.poppins(.headline, .semibold))
+                } icon: {
+                    Image(systemName: "person.3.sequence.fill")
+                        .font(.headline.weight(.semibold))
+                }
+                .foregroundStyle(.primary)
 
                 Spacer(minLength: 0)
 
                 Button(action: onClose) {
                     Image(systemName: "xmark.circle.fill")
                         .font(.title3.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
                 .buttonStyle(.plain)
             }
@@ -1009,23 +1027,23 @@ private struct GroupPickerGlassSheet: View {
                     "Elige a qué grupo debe asociarse este terreno. Este selector queda fijo para que no salte a otra zona de la pantalla."
                 )
             )
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.caption))
+            .foregroundStyle(AppTheme.inkSecondary)
             .fixedSize(horizontal: false, vertical: true)
 
             VStack(spacing: 10) {
                 selectionRow(
                     title: language.localized("No group", "Sin grupo"),
                     subtitle: language.localized("The land will stay ungrouped for now.", "El terreno quedará sin grupo por ahora."),
-                    tint: Color.secondary.opacity(0.65),
+                    tint: AppTheme.neutral.opacity(0.65),
                     isSelected: selectedGroupID == nil,
                     action: onSelectNone
                 )
 
                 if groups.isEmpty {
                     Text(language.localized("There are no groups created yet.", "Todavía no hay grupos creados."))
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.footnote))
+                        .foregroundStyle(AppTheme.inkSecondary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal, 4)
                         .padding(.top, 2)
@@ -1051,12 +1069,17 @@ private struct GroupPickerGlassSheet: View {
             }
 
             Button(action: onCreateGroup) {
-                Label(language.localized("New group", "Nuevo grupo"), systemImage: "plus.circle.fill")
-                    .font(.subheadline.weight(.semibold))
-                    .frame(maxWidth: .infinity)
+                Label {
+                    Text(language.localized("New group", "Nuevo grupo"))
+                        .font(.poppins(.subheadline, .semibold))
+                } icon: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.subheadline.weight(.semibold))
+                }
+                .foregroundStyle(AppTheme.onBrand)
+                .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .tint(tint)
         }
         .padding(18)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -1083,13 +1106,13 @@ private struct GroupPickerGlassSheet: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                         .foregroundStyle(.primary)
                         .lineLimit(1)
 
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                         .lineLimit(1)
                 }
 
@@ -1097,7 +1120,7 @@ private struct GroupPickerGlassSheet: View {
 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(isSelected ? tint : .secondary)
+                    .foregroundStyle(isSelected ? tint : AppTheme.inkSecondary)
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 12)

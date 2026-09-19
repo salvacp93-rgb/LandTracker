@@ -40,8 +40,8 @@ struct LandLocationPickerCard: View {
                     ),
                     systemImage: "exclamationmark.triangle.fill"
                 )
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.orange)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.warningText)
             }
 
             HStack(spacing: 8) {
@@ -70,8 +70,8 @@ struct LandLocationPickerCard: View {
 
             if let searchError {
                 Text(searchError)
-                    .font(.caption)
-                    .foregroundStyle(.red)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.negative)
             }
 
             if !searchResults.isEmpty {
@@ -82,13 +82,13 @@ struct LandLocationPickerCard: View {
                         } label: {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(item.name ?? language.localized("Unnamed place", "Lugar sin nombre"))
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.poppins(.subheadline, .semibold))
                                     .foregroundStyle(.primary)
 
                                 if let addressLine = item.address?.fullAddress {
                                     Text(addressLine)
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
+                                        .font(.poppins(.caption))
+                                        .foregroundStyle(AppTheme.inkSecondary)
                                         .lineLimit(1)
                                 }
                             }
@@ -109,7 +109,7 @@ struct LandLocationPickerCard: View {
                             language.localized("Land", "Terreno"),
                             coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
                         )
-                        .tint(.blue)
+                        .tint(AppTheme.clay)
                     }
                 }
                 .gesture(
@@ -127,8 +127,8 @@ struct LandLocationPickerCard: View {
             )
 
             Text(language.localized("Tap the map to place or move the pin.", "Toca el mapa para colocar o mover el pin."))
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption2))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
     }
 

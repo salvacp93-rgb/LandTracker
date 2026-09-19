@@ -54,11 +54,12 @@ struct AccountView: View {
                 }
                 signOutSection
             }
+            .font(.poppins(.body))
             .padding(16)
             .padding(.bottom, 28)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .background(Color(.systemGroupedBackground))
+        .background(AppBackground())
         .navigationTitle(language.localized("Account", "Cuenta"))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -161,8 +162,8 @@ struct AccountView: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color(red: 0.07, green: 0.46, blue: 0.87),
-                            Color(red: 0.16, green: 0.67, blue: 0.51)
+                            AppTheme.oliveFill,
+                            AppTheme.oliveDeepFill
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -179,11 +180,11 @@ struct AccountView: View {
 
                     VStack(alignment: .leading, spacing: 5) {
                         Text(accountHeroTitle)
-                            .font(.title3.weight(.semibold))
+                            .font(.poppins(.title3, .semibold))
                             .foregroundStyle(.white)
 
                         Text(accountHeroSubtitle)
-                            .font(.subheadline)
+                            .font(.poppins(.subheadline))
                             .foregroundStyle(.white.opacity(0.88))
 
                         HStack(spacing: 8) {
@@ -214,21 +215,21 @@ struct AccountView: View {
                         title: language.localized("Lands", "Terrenos"),
                         value: "\(lands.count)",
                         systemImage: "square.split.2x1.fill",
-                        colors: [Color(red: 0.16, green: 0.55, blue: 0.93), Color(red: 0.11, green: 0.45, blue: 0.84)]
+                        colors: [AppTheme.clayFill, AppTheme.clayDeepFill]
                     )
 
                     GlassHeroSummaryTile(
                         title: language.localized("Groups", "Grupos"),
                         value: "\(groups.count)",
                         systemImage: "square.grid.2x2.fill",
-                        colors: [Color(red: 0.33, green: 0.62, blue: 0.39), Color(red: 0.20, green: 0.55, blue: 0.31)]
+                        colors: [AppTheme.goldFill, AppTheme.goldDeepFill]
                     )
 
                     GlassHeroSummaryTile(
                         title: language.localized("Pending", "Pendientes"),
                         value: "\(pendingOperations.count)",
                         systemImage: "arrow.triangle.2.circlepath",
-                        colors: [Color(red: 0.96, green: 0.66, blue: 0.18), Color(red: 0.91, green: 0.45, blue: 0.20)]
+                        colors: [AppTheme.warningFill, AppTheme.clayDeepFill]
                     )
 
                     GlassHeroSummaryTile(
@@ -237,7 +238,7 @@ struct AccountView: View {
                             ? language.localized("Enabled", "Activa")
                             : language.localized("Standard", "Estandar"),
                         systemImage: "doc.text.fill",
-                        colors: [Color(red: 0.41, green: 0.49, blue: 0.93), Color(red: 0.24, green: 0.35, blue: 0.82)]
+                        colors: [AppTheme.oliveDeepFill, AppTheme.goldDeepFill]
                     )
                 }
             }
@@ -254,33 +255,33 @@ struct AccountView: View {
             title: language.localized("Sync", "Sincronizacion"),
             subtitle: language.localized("Control the local queue and force a refresh whenever you need it.", "Controla la cola local y fuerza una actualizacion cuando lo necesites."),
             systemImage: "arrow.triangle.2.circlepath.circle.fill",
-            tint: Color(red: 0.18, green: 0.54, blue: 0.92)
+            tint: AppTheme.olive
         ) {
             accountValueShell(
                 label: language.localized("Pending changes", "Cambios pendientes"),
                 value: "\(pendingOperations.count)",
                 systemImage: "clock.badge.exclamationmark.fill",
-                tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                tint: AppTheme.warning
             )
 
             accountValueShell(
                 label: language.localized("Last successful sync", "Ultima sincronizacion correcta"),
                 value: lastSuccessfulSyncText,
                 systemImage: "checkmark.icloud.fill",
-                tint: Color(red: 0.19, green: 0.63, blue: 0.40)
+                tint: AppTheme.positive
             )
 
             if let lastError = pendingLastError {
                 Text(lastError)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.footnote))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(Color.red.opacity(0.16), lineWidth: 1)
+                            .stroke(AppTheme.negative.opacity(0.16), lineWidth: 1)
                     )
             }
 
@@ -295,11 +296,12 @@ struct AccountView: View {
                             .frame(maxWidth: .infinity)
                     } else {
                         Label(language.localized("Sync now", "Sincronizar ahora"), systemImage: "arrow.triangle.2.circlepath")
+                            .foregroundStyle(AppTheme.onBrand)
                             .frame(maxWidth: .infinity)
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.18, green: 0.54, blue: 0.92))
+                .font(.poppins(.subheadline, .semibold))
                 .disabled(isInteractionBlocked)
 
                 Button {
@@ -311,7 +313,7 @@ struct AccountView: View {
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
-                .tint(Color(red: 0.18, green: 0.54, blue: 0.92))
+                .font(.poppins(.subheadline, .semibold))
                 .disabled(retryPendingDisabled)
             }
         }
@@ -322,31 +324,31 @@ struct AccountView: View {
             title: language.localized("Bulk Data", "Datos masivos"),
             subtitle: language.localized("Keep the CSV source connected so this device can process the latest spreadsheet whenever needed.", "Mantiene conectada la fuente CSV para que este dispositivo pueda procesar la ultima hoja cuando haga falta."),
             systemImage: "tablecells.badge.ellipsis",
-            tint: Color(red: 0.58, green: 0.46, blue: 0.92)
+            tint: AppTheme.highlight
         ) {
             if spreadsheetSourceFileName.isEmpty {
                 Text(language.localized("No file configured yet.", "No hay archivo configurado todavia."))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 accountValueShell(
                     label: language.localized("File", "Archivo"),
                     value: spreadsheetSourceFileName,
                     systemImage: "doc.text.fill",
-                    tint: Color(red: 0.58, green: 0.46, blue: 0.92)
+                    tint: AppTheme.highlight
                 )
 
                 accountValueShell(
                     label: language.localized("Latest cloud reference", "Ultima referencia cloud"),
                     value: spreadsheetSourceUpdatedText,
                     systemImage: "icloud.fill",
-                    tint: Color(red: 0.23, green: 0.64, blue: 0.91)
+                    tint: AppTheme.olive
                 )
 
                 accountValueShell(
                     label: language.localized("Cloud hash", "Hash cloud"),
                     value: shortHash(spreadsheetSourceHash),
                     systemImage: "number.square.fill",
-                    tint: Color(red: 0.23, green: 0.64, blue: 0.91),
+                    tint: AppTheme.olive,
                     isMonospaced: true
                 )
             }
@@ -355,13 +357,13 @@ struct AccountView: View {
                 label: language.localized("Latest local processing", "Ultimo proceso local"),
                 value: lastProcessedSpreadsheetText,
                 systemImage: "desktopcomputer",
-                tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                tint: AppTheme.clay
             )
 
             if let spreadsheetError {
                 Text(spreadsheetError)
-                    .font(.footnote)
-                    .foregroundStyle(.red)
+                    .font(.poppins(.footnote))
+                    .foregroundStyle(AppTheme.negative)
             }
 
             Button {
@@ -371,10 +373,11 @@ struct AccountView: View {
                     ProgressView()
                 } else {
                     Label(language.localized("Upload and process CSV", "Subir y procesar CSV"), systemImage: "doc.badge.plus")
+                        .foregroundStyle(AppTheme.onBrand)
                 }
             }
             .buttonStyle(.borderedProminent)
-            .tint(Color(red: 0.58, green: 0.46, blue: 0.92))
+            .font(.poppins(.subheadline, .semibold))
             .disabled(isInteractionBlocked)
 
             Button {
@@ -385,7 +388,7 @@ struct AccountView: View {
                 Label(language.localized("Process cloud file on this device", "Procesar archivo cloud en este dispositivo"), systemImage: "arrow.down.doc")
             }
             .buttonStyle(.bordered)
-            .tint(Color(red: 0.58, green: 0.46, blue: 0.92))
+            .font(.poppins(.subheadline, .semibold))
             .disabled(isInteractionBlocked || !hasCloudSpreadsheetReference)
 
             Text(
@@ -394,13 +397,13 @@ struct AccountView: View {
                     "Formato esperado: CSV exportado desde Excel. Columnas minimas: refcat (o nombre de terreno), year y month."
                 )
             )
-            .font(.caption)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.caption))
+            .foregroundStyle(AppTheme.inkSecondary)
         }
     }
 
     private var signOutSection: some View {
-        GlassPanelCard(systemImage: "door.left.hand.open", tint: Color.red) {
+        GlassPanelCard(systemImage: "door.left.hand.open", tint: AppTheme.negative) {
             HStack {
                 Spacer(minLength: 0)
 
@@ -411,8 +414,10 @@ struct AccountView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .font(.poppins(.body, .semibold))
                 .controlSize(.large)
-                .tint(.red)
+                .tint(AppTheme.negative)
+                .foregroundStyle(AppTheme.onBrand)
 
                 Spacer(minLength: 0)
             }
@@ -424,7 +429,7 @@ struct AccountView: View {
             title: language.localized("Profile", "Perfil"),
             subtitle: language.localized("Adjust your visible identity and the details that describe this account.", "Ajusta tu identidad visible y los datos que describen esta cuenta."),
             systemImage: "person.crop.circle.fill",
-            tint: Color(red: 0.19, green: 0.63, blue: 0.40)
+            tint: AppTheme.olive
         ) {
             HStack(spacing: 10) {
                 PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
@@ -437,7 +442,7 @@ struct AccountView: View {
                     .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.bordered)
-                .tint(Color(red: 0.19, green: 0.63, blue: 0.40))
+                .font(.poppins(.subheadline, .semibold))
                 .disabled(isInteractionBlocked)
 
                 if profileImageData != nil {
@@ -447,27 +452,30 @@ struct AccountView: View {
                         }
                     }
                     .buttonStyle(.bordered)
+                    .font(.poppins(.subheadline, .semibold))
+                    .tint(AppTheme.negative)
                     .disabled(isInteractionBlocked)
                 }
             }
 
             if isSavingPhoto {
                 ProgressView(language.localized("Uploading photo...", "Subiendo foto..."))
-                    .font(.footnote)
+                    .font(.poppins(.footnote))
             }
 
             if let photoError {
                 Text(photoError)
-                    .font(.footnote)
-                    .foregroundStyle(.red)
+                    .font(.poppins(.footnote))
+                    .foregroundStyle(AppTheme.negative)
             }
 
             accountFieldShell(
                 label: language.localized("Display name", "Nombre visible"),
                 systemImage: "character.textbox",
-                tint: Color(red: 0.18, green: 0.54, blue: 0.92)
+                tint: AppTheme.olive
             ) {
                 TextField(language.localized("How others will identify you", "Como te identificaran los demas"), text: $displayName)
+                    .font(.poppins(.callout, .medium))
                     .textInputAutocapitalization(.words)
             }
 
@@ -475,21 +483,21 @@ struct AccountView: View {
                 label: language.localized("Email", "Email"),
                 value: accountEmail,
                 systemImage: "envelope.fill",
-                tint: Color(red: 0.18, green: 0.54, blue: 0.92)
+                tint: AppTheme.olive
             )
 
             accountValueShell(
                 label: language.localized("Account type", "Tipo de cuenta"),
                 value: accountTypeDisplayName,
                 systemImage: accountTypeSymbol,
-                tint: Color(red: 0.19, green: 0.63, blue: 0.40)
+                tint: AppTheme.positive
             )
 
             accountValueShell(
                 label: language.localized("Access role", "Rol de acceso"),
                 value: roleAccessViewModel.activeRole.displayName(language: language),
                 systemImage: roleAccessViewModel.activeRole.symbolName,
-                tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                tint: AppTheme.clay
             )
         }
     }
@@ -499,14 +507,14 @@ struct AccountView: View {
             title: language.localized("Preferences", "Preferencias"),
             subtitle: language.localized("Choose the level of detail that appears throughout your daily lists.", "Elige el nivel de detalle que aparece en tus listas del dia a dia."),
             systemImage: "slider.horizontal.3",
-            tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+            tint: AppTheme.clay
         ) {
             if roleAccessViewModel.canViewEconomics {
                 accountToggleShell(
                     title: language.localized("Show income in lists", "Mostrar ingresos en lista"),
                     subtitle: language.localized("Keep financial context visible at a glance.", "Mantiene el contexto economico visible de un vistazo."),
                     systemImage: "dollarsign.circle.fill",
-                    tint: Color(red: 0.18, green: 0.54, blue: 0.92),
+                    tint: AppTheme.olive,
                     isOn: $showIncomeInList
                 )
             }
@@ -515,7 +523,7 @@ struct AccountView: View {
                 title: language.localized("Show subtype in lists", "Mostrar subtipo en lista"),
                 subtitle: language.localized("Display the crop variety next to each land when available.", "Muestra la variedad del cultivo junto a cada terreno cuando exista."),
                 systemImage: "leaf.circle.fill",
-                tint: Color(red: 0.19, green: 0.63, blue: 0.40),
+                tint: AppTheme.positive,
                 isOn: $showSubtypeInList
             )
         }
@@ -529,11 +537,11 @@ struct AccountView: View {
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(title)
-                    .font(.caption2.weight(.medium))
+                    .font(.poppins(.caption2, .medium))
                     .foregroundStyle(.white.opacity(0.78))
 
                 Text(value)
-                    .font(.caption.weight(.semibold))
+                    .font(.poppins(.caption, .semibold))
                     .foregroundStyle(.white)
             }
         }
@@ -553,9 +561,14 @@ struct AccountView: View {
         @ViewBuilder content: () -> Content
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(label, systemImage: systemImage)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(tint)
+            Label {
+                Text(label)
+                    .font(.poppins(.caption, .semibold))
+            } icon: {
+                Image(systemName: systemImage)
+                    .font(.caption.weight(.semibold))
+            }
+            .foregroundStyle(tint)
 
             content()
                 .padding(.horizontal, 14)
@@ -585,11 +598,11 @@ struct AccountView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(label)
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .medium))
+                    .foregroundStyle(AppTheme.inkSecondary)
 
                 Text(value)
-                    .font(isMonospaced ? .footnote.monospaced() : .body.weight(.semibold))
+                    .font(isMonospaced ? Font.footnote.monospaced() : Font.poppins(.body, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(2)
             }
@@ -623,10 +636,10 @@ struct AccountView: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
         }

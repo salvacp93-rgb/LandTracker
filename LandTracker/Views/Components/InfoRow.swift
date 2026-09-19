@@ -7,11 +7,11 @@ struct InfoRow: View {
     var body: some View {
         HStack(alignment: .firstTextBaseline) {
             Text(label)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .frame(width: 120, alignment: .leading)
             Text(value)
-                .font(.body)
+                .font(.poppins(.body))
             Spacer(minLength: 0)
         }
     }

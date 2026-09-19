@@ -45,6 +45,7 @@ struct GroupEditorView: View {
                                 text: $name
                             )
                             .textInputAutocapitalization(.words)
+                            .font(.poppins(.body))
                         }
                     }
 
@@ -82,11 +83,11 @@ struct GroupEditorView: View {
 
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(language.localized("Current color", "Color actual"))
-                                    .font(.caption.weight(.semibold))
-                                    .foregroundStyle(.secondary)
+                                    .font(.poppins(.caption, .semibold))
+                                    .foregroundStyle(AppTheme.inkSecondary)
 
                                 Text("#" + colorHex)
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.poppins(.subheadline, .semibold))
                                     .foregroundStyle(.primary)
                             }
 
@@ -98,7 +99,7 @@ struct GroupEditorView: View {
                 .padding(.bottom, 28)
             }
             .scrollBounceBehavior(.basedOnSize)
-            .background(Color(.systemGroupedBackground))
+            .background(AppBackground())
             .navigationTitle(language.localized("New Group", "Nuevo grupo"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -126,7 +127,7 @@ struct GroupEditorView: View {
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Label(label, systemImage: systemImage)
-                .font(.caption.weight(.semibold))
+                .font(.poppins(.caption, .semibold))
                 .foregroundStyle(tint)
 
             content()
@@ -171,11 +172,11 @@ private struct GroupColorChoiceCard: View {
 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(isSelected ? color : .secondary)
+                    .foregroundStyle(isSelected ? color : AppTheme.inkSecondary)
 
                 Text(isSelected ? selectedLabel : " ")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(isSelected ? .primary : .secondary)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(isSelected ? Color.primary : AppTheme.inkSecondary)
                     .lineLimit(1)
             }
             .padding(.horizontal, 10)

@@ -34,13 +34,13 @@ struct GlassSelectionCard: View {
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                         .foregroundStyle(.primary)
 
                     if let subtitle, !subtitle.isEmpty {
                         Text(subtitle)
-                            .font(.caption)
-                            .foregroundStyle(Color.secondary.opacity(isSelected ? 0.88 : 1))
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary.opacity(isSelected ? 0.88 : 1))
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -49,7 +49,7 @@ struct GlassSelectionCard: View {
 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(isSelected ? tint : Color.secondary)
+                    .foregroundStyle(isSelected ? tint : AppTheme.inkSecondary)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -70,7 +70,7 @@ struct GlassSelectionCard: View {
         Group {
             if let iconText, !iconText.isEmpty {
                 Text(iconText)
-                    .font(.headline)
+                    .font(.poppins(.headline))
                     .frame(width: 30, height: 30)
             } else {
                 Image(systemName: systemImage)
@@ -156,7 +156,7 @@ struct GradientInfoPill: View {
             Group {
                 if let iconText, !iconText.isEmpty {
                     Text(iconText)
-                        .font(.caption)
+                        .font(.poppins(.caption))
                         .frame(width: 24, height: 24)
                 } else {
                     Image(systemName: systemImage)
@@ -169,12 +169,12 @@ struct GradientInfoPill: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.82))
+                    .font(.poppins(.caption2, .medium))
+                    .foregroundStyle(.white.opacity(0.92))
                     .lineLimit(1)
 
                 Text(value)
-                    .font(.caption.weight(.semibold))
+                    .font(.poppins(.caption, .semibold))
                     .foregroundStyle(.white)
                     .lineLimit(1)
             }
@@ -230,13 +230,13 @@ struct GlassPanelCard<Content: View>: View {
                     VStack(alignment: .leading, spacing: 4) {
                         if let title, !title.isEmpty {
                             Text(title)
-                                .font(.headline.weight(.semibold))
+                                .font(.poppins(.headline, .semibold))
                         }
 
                         if let subtitle, !subtitle.isEmpty {
                             Text(subtitle)
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(.poppins(.caption))
+                                .foregroundStyle(AppTheme.inkSecondary)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
@@ -297,7 +297,7 @@ struct GlassHeroSummaryTile: View {
             Group {
                 if let iconText, !iconText.isEmpty {
                     Text(iconText)
-                        .font(.title3)
+                        .font(.poppins(.title3))
                         .frame(width: 34, height: 34)
                 } else {
                     Image(systemName: systemImage)
@@ -310,13 +310,13 @@ struct GlassHeroSummaryTile: View {
 
             VStack(spacing: 3) {
                 Text(title)
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.white.opacity(0.82))
+                    .font(.poppins(.caption, .medium))
+                    .foregroundStyle(.white.opacity(0.92))
                     .lineLimit(1)
                     .multilineTextAlignment(.center)
 
                 Text(value)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.white)
                     .lineLimit(2)
                     .minimumScaleFactor(0.78)

@@ -42,7 +42,7 @@ struct InsightsView: View {
                     .scrollBounceBehavior(.basedOnSize)
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(AppBackground())
             .navigationTitle(language.localized("Insights", "Estadísticas"))
         }
     }
@@ -54,20 +54,20 @@ struct InsightsView: View {
             title: language.localized("Portfolio", "Portfolio"),
             subtitle: language.localized("Annual plan across all your lands.", "Plan anual en todos tus terrenos."),
             systemImage: "chart.bar.fill",
-            tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+            tint: AppTheme.olive
         ) {
             LazyVGrid(columns: twoColumns, spacing: 10) {
                 insightTile(
                     title: language.localized("Income", "Ingresos"),
                     value: portfolio.totalIncome.formatted(.currency(code: currencyCode)),
                     subtitle: language.localized("Annual plan", "Plan anual"),
-                    tint: Color(red: 0.08, green: 0.62, blue: 0.47)
+                    tint: AppTheme.positive
                 )
                 insightTile(
                     title: language.localized("Expenses", "Gastos"),
                     value: portfolio.totalExpenses.formatted(.currency(code: currencyCode)),
                     subtitle: language.localized("Irrigation, labor, more", "Riego, mano de obra..."),
-                    tint: Color(red: 0.91, green: 0.45, blue: 0.20)
+                    tint: AppTheme.clay
                 )
                 insightTile(
                     title: language.localized("Net Margin", "Margen neto"),
@@ -76,14 +76,14 @@ struct InsightsView: View {
                         "\(($0 * 100).formatted(.number.precision(.fractionLength(1))))%"
                     } ?? "—",
                     tint: portfolio.totalNetMargin >= 0
-                        ? Color(red: 0.10, green: 0.58, blue: 0.38)
-                        : Color(red: 0.83, green: 0.24, blue: 0.27)
+                        ? AppTheme.positive
+                        : AppTheme.negative
                 )
                 insightTile(
                     title: language.localized("Area", "Superficie"),
                     value: "\(AppSettings.areaValue(fromAcres: portfolio.totalAreaAcres, system: measurementSystem).formatted(.number.precision(.fractionLength(1)))) \(AppSettings.areaShortUnit(system: measurementSystem))",
                     subtitle: "\(lands.count) \(language.localized("lands", "terrenos"))",
-                    tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                    tint: AppTheme.highlight
                 )
             }
 
@@ -92,12 +92,12 @@ struct InsightsView: View {
                     landHighlightTile(
                         label: language.localized("Best margin", "Mejor margen"),
                         land: best,
-                        tint: Color(red: 0.10, green: 0.58, blue: 0.38)
+                        tint: AppTheme.positive
                     )
                     landHighlightTile(
                         label: language.localized("Weakest margin", "Margen más débil"),
                         land: worst,
-                        tint: Color(red: 0.83, green: 0.24, blue: 0.27)
+                        tint: AppTheme.negative
                     )
                 }
             }
@@ -109,7 +109,7 @@ struct InsightsView: View {
             title: language.localized("Suggestions", "Sugerencias"),
             subtitle: language.localized("Based on your plan data and recorded history.", "Basadas en tu plan y el histórico registrado."),
             systemImage: "lightbulb.fill",
-            tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+            tint: AppTheme.warning
         ) {
             VStack(spacing: 10) {
                 ForEach(Array(allSuggestions.enumerated()), id: \.offset) { _, item in
@@ -124,7 +124,7 @@ struct InsightsView: View {
             title: language.localized("Land Breakdown", "Desglose por terreno"),
             subtitle: language.localized("Net margin rate per land.", "Margen neto por terreno."),
             systemImage: "list.bullet.rectangle",
-            tint: Color(red: 0.57, green: 0.46, blue: 0.92)
+            tint: AppTheme.highlight
         ) {
             VStack(spacing: 10) {
                 ForEach(lands) { land in
@@ -137,23 +137,28 @@ struct InsightsView: View {
     // MARK: - Reusable subviews
 
     @ViewBuilder
-    private func insightTile(title: String, value: String, subtitle: String, tint: Color) -> some View {
+    private func insightTile(
+        title: String,
+        value: String,
+        subtitle: String,
+        tint: Color
+    ) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Image(systemName: "circle.fill")
                 .font(.system(size: 8))
                 .foregroundStyle(tint)
             Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .lineLimit(1)
             Text(value)
-                .font(.headline.weight(.semibold))
-                .foregroundStyle(.primary)
+                .font(.poppins(size: 18, .bold, relativeTo: .headline))
+                .foregroundStyle(AppTheme.ink)
                 .lineLimit(2)
                 .minimumScaleFactor(0.82)
             Text(subtitle)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption2))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 14)
@@ -170,17 +175,17 @@ struct InsightsView: View {
         let insight = LandEconomicInsight(land: land)
         VStack(alignment: .leading, spacing: 4) {
             Text(label)
-                .font(.caption.weight(.semibold))
+                .font(.poppins(.caption, .semibold))
                 .foregroundStyle(tint)
             Text(land.name)
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)
             Text(insight.netMarginRate.map {
                 "\(($0 * 100).formatted(.number.precision(.fractionLength(1))))%"
             } ?? "—")
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 12)
@@ -203,11 +208,11 @@ struct InsightsView: View {
                 .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(land.name)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
                 Text(detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             Spacer(minLength: 0)
@@ -227,8 +232,8 @@ struct InsightsView: View {
         let insight = LandEconomicInsight(land: land)
         let margin = insight.netMarginRate ?? 0
         let tint: Color = margin >= 0
-            ? Color(red: 0.10, green: 0.58, blue: 0.38)
-            : Color(red: 0.83, green: 0.24, blue: 0.27)
+            ? AppTheme.positive
+            : AppTheme.negative
         HStack(spacing: 12) {
             Image(systemName: "leaf.fill")
                 .font(.subheadline.weight(.semibold))
@@ -237,24 +242,24 @@ struct InsightsView: View {
                 .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
             VStack(alignment: .leading, spacing: 3) {
                 Text(land.name)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
                 Text(land.annualNetMargin.formatted(.currency(code: currencyCode)))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
             }
             Spacer(minLength: 0)
             VStack(alignment: .trailing, spacing: 2) {
                 Text(insight.netMarginRate.map {
                     "\(($0 * 100).formatted(.number.precision(.fractionLength(1))))%"
                 } ?? "—")
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .bold))
                     .foregroundStyle(tint)
                 if let perAcre = insight.incomePerAcre {
                     Text("\(perAcre.formatted(.currency(code: currencyCode)))/\(AppSettings.areaShortUnit(system: measurementSystem))")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption2))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
         }
@@ -302,7 +307,7 @@ struct InsightsView: View {
                     "Losing \((-amount).formatted(.currency(code: currencyCode))) per year based on your plan.",
                     "Pérdida de \((-amount).formatted(.currency(code: currencyCode))) anuales según tu plan."
                 ),
-                Color(red: 0.83, green: 0.24, blue: 0.27)
+                AppTheme.negative
             )
         case .dominantCost(let category, let share):
             return (
@@ -311,7 +316,7 @@ struct InsightsView: View {
                     "\(category.rawValue.capitalized) accounts for \((share * 100).formatted(.number.precision(.fractionLength(0))))% of total expenses.",
                     "\(category.rawValue.capitalized) representa el \((share * 100).formatted(.number.precision(.fractionLength(0))))% del gasto total."
                 ),
-                Color(red: 0.96, green: 0.66, blue: 0.18)
+                AppTheme.warning
             )
         case .planUnderachieved(let variance):
             return (
@@ -320,7 +325,7 @@ struct InsightsView: View {
                     "\((-variance).formatted(.currency(code: currencyCode))) below prorated plan based on months recorded.",
                     "\((-variance).formatted(.currency(code: currencyCode))) por debajo del plan prorrateado según los meses registrados."
                 ),
-                Color(red: 0.91, green: 0.45, blue: 0.20)
+                AppTheme.clay
             )
         case .noHistoryData:
             return (
@@ -329,7 +334,7 @@ struct InsightsView: View {
                     "No monthly history recorded. Add actuals to unlock trend analysis.",
                     "Sin histórico mensual registrado. Añade datos reales para activar el análisis de tendencia."
                 ),
-                Color(red: 0.57, green: 0.46, blue: 0.92)
+                AppTheme.highlight
             )
         }
     }

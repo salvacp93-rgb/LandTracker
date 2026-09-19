@@ -26,7 +26,7 @@ struct TeamView: View {
         NavigationStack {
             List {
                 if roleAccessViewModel.hasOwnerAccess {
-                    Section(language.localized("Invite Employee", "Invitar empleado")) {
+                    Section {
                         inviteToggleButton
                             .listRowBackground(Color.clear)
 
@@ -34,19 +34,21 @@ struct TeamView: View {
                             inviteComposerCard
                                 .listRowBackground(Color.clear)
                         }
+                    } header: {
+                        AppSectionHeader(language.localized("Invite Employee", "Invitar empleado"))
                     }
                 }
 
                 if !pendingInvitations.isEmpty {
-                    Section(language.localized("Pending Invites", "Invitaciones pendientes")) {
+                    Section {
                         ForEach(pendingInvitations) { invitation in
                             HStack {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(invitation.invitedEmail)
-                                        .font(.subheadline)
+                                        .font(.poppins(.subheadline))
                                     Text(localizedRoleName(invitation.role))
-                                        .font(.caption)
-                                        .foregroundStyle(.secondary)
+                                        .font(.poppins(.caption))
+                                        .foregroundStyle(AppTheme.inkSecondary)
                                 }
                                 Spacer()
 
@@ -67,56 +69,63 @@ struct TeamView: View {
                                                     }
                                                 }
                                             } label: {
-                                                Text(localizedRoleName(invitation.role))
-                                                    .font(.caption)
-                                                    .foregroundStyle(.secondary)
+                                                roleBadge(localizedRoleName(invitation.role), role: invitation.role)
                                             }
                                         }
                                     } else {
-                                        Text(localizedRoleName(invitation.role))
-                                            .font(.caption)
-                                            .foregroundStyle(.secondary)
+                                        roleBadge(localizedRoleName(invitation.role), role: invitation.role)
                                     }
 
                                     if let invitedAt = invitation.invitedAt {
                                         Text(invitedAt.formatted(date: .abbreviated, time: .shortened))
-                                            .font(.caption2)
-                                            .foregroundStyle(.secondary)
+                                            .font(.poppins(.caption2))
+                                            .foregroundStyle(AppTheme.inkSecondary)
                                     }
                                 }
                             }
+                            .listRowBackground(AppTheme.card)
                         }
+                    } header: {
+                        AppSectionHeader(language.localized("Pending Invites", "Invitaciones pendientes"))
                     }
                 }
 
-                Section(language.localized("Active Team", "Equipo activo")) {
+                Section {
                     if organizationMembers.isEmpty {
                         Text(language.localized("No active employees yet.", "Aún no hay empleados activos."))
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.body))
+                            .foregroundStyle(AppTheme.inkSecondary)
+                            .listRowBackground(AppTheme.card)
                     } else {
                         activeTeamCards
                             .listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 6, trailing: 4))
                             .listRowBackground(Color.clear)
                             .listRowSeparator(.hidden)
                     }
+                } header: {
+                    AppSectionHeader(language.localized("Active Team", "Equipo activo"))
                 }
 
                 if let errorMessage {
                     Section {
                         Text(errorMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.red)
+                            .font(.poppins(.footnote))
+                            .foregroundStyle(AppTheme.negative)
+                            .listRowBackground(AppTheme.card)
                     }
                 }
 
                 if let successMessage {
                     Section {
                         Text(successMessage)
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.footnote))
+                            .foregroundStyle(AppTheme.inkSecondary)
+                            .listRowBackground(AppTheme.card)
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(AppBackground())
             .navigationTitle(language.localized("Team", "Equipo"))
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
@@ -179,23 +188,23 @@ struct TeamView: View {
             HStack(spacing: 12) {
                 Image(systemName: "person.badge.plus")
                     .font(.headline.weight(.semibold))
-                    .foregroundStyle(Color.blue)
+                    .foregroundStyle(AppTheme.clay)
                     .frame(width: 34, height: 34)
-                    .background(Color.blue.opacity(0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .background(AppTheme.clay.opacity(0.14), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(language.localized("Invite employee", "Invitar empleado"))
-                        .font(.headline)
+                        .font(.poppins(.headline))
                     Text(language.localized("Open invite composer", "Abrir formulario de invitación"))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
 
                 Spacer()
 
                 Image(systemName: "chevron.down")
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .rotationEffect(.degrees(showingInviteComposer ? 180 : 0))
             }
             .padding(12)
@@ -212,13 +221,14 @@ struct TeamView: View {
         VStack(spacing: 14) {
             HStack(spacing: 10) {
                 Image(systemName: "envelope.fill")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .frame(width: 18)
 
                 TextField(
                     language.localized("Employee email", "Email del empleado"),
                     text: $employeeEmail
                 )
+                .font(.poppins(.callout, .medium))
                 .textInputAutocapitalization(.never)
                 .keyboardType(.emailAddress)
                 .autocorrectionDisabled()
@@ -234,8 +244,8 @@ struct TeamView: View {
             HStack(alignment: .top, spacing: 12) {
                 VStack(alignment: .leading, spacing: 10) {
                     Text(language.localized("Role", "Rol"))
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption, .semibold))
+                        .foregroundStyle(AppTheme.inkSecondary)
 
                     VStack(spacing: 8) {
                         ForEach(TeamInviteRole.allCases) { role in
@@ -281,8 +291,8 @@ struct TeamView: View {
                     .opacity(canSendInvite ? 1 : 0.44)
 
                     Text(language.localized("Send", "Enviar"))
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption2, .semibold))
+                        .foregroundStyle(AppTheme.inkSecondary)
 
                     Spacer(minLength: 0)
                 }
@@ -292,7 +302,7 @@ struct TeamView: View {
         .padding(14)
         .background(
             LinearGradient(
-                colors: [Color.blue.opacity(0.14), Color.cyan.opacity(0.08)],
+                colors: [AppTheme.clay.opacity(0.12), AppTheme.olive.opacity(0.08)],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             ),
@@ -321,7 +331,7 @@ struct TeamView: View {
                     )
 
                 Text(role.displayName(language: language))
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
 
                 Spacer()
 
@@ -335,7 +345,7 @@ struct TeamView: View {
             .padding(.vertical, 9)
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(isSelected ? role.tintColor : Color.primary.opacity(0.06))
+                    .fill(isSelected ? role.fillColor : Color.primary.opacity(0.06))
             )
         }
         .buttonStyle(.plain)
@@ -358,14 +368,14 @@ struct TeamView: View {
                 Circle()
                     .fill(
                         LinearGradient(
-                            colors: [memberAccentColor(member).opacity(0.95), memberAccentColor(member).opacity(0.62)],
+                            colors: [memberAccentColor(member), memberAccentColor(member).opacity(0.82)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         )
                     )
 
                 Text(memberInitials(member))
-                    .font(.title3.weight(.bold))
+                    .font(.poppins(.title3, .bold))
                     .foregroundStyle(.white)
             }
             .frame(width: 70, height: 70)
@@ -382,7 +392,7 @@ struct TeamView: View {
             }
 
             Text(memberDisplayName(member))
-                .font(.footnote.weight(.semibold))
+                .font(.poppins(.footnote, .semibold))
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
@@ -400,22 +410,20 @@ struct TeamView: View {
                         Image(systemName: "chevron.down")
                             .font(.caption2.weight(.semibold))
                     }
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(roleColors(member.role).text)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.primary.opacity(0.07), in: Capsule())
+                    .background(roleColors(member.role).tint.opacity(0.12), in: Capsule())
                 }
                 .buttonStyle(.plain)
             } else {
-                Text(localizedRoleName(member.role))
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                roleBadge(localizedRoleName(member.role), role: member.role)
             }
 
             Text(member.memberState.capitalized)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption2))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 10)
@@ -461,9 +469,42 @@ struct TeamView: View {
     }
 
     private func memberAccentColor(_ member: OrganizationMemberSummary) -> Color {
+        let palette = [
+            AppTheme.oliveFill,
+            AppTheme.clayFill,
+            AppTheme.goldFill,
+            AppTheme.oliveDeepFill,
+            AppTheme.clayDeepFill,
+            AppTheme.negativeFill
+        ]
         let hash = abs(member.userID.uuidString.hashValue)
-        let hue = Double(hash % 360) / 360.0
-        return Color(hue: hue, saturation: 0.62, brightness: 0.82)
+        return palette[hash % palette.count]
+    }
+
+    /// Brand tint (badge fill) and text color for a role badge: owner = clay, admin = olive,
+    /// member = gold, viewer/unknown = neutral. Text uses the AA-safe clay and secondary ink.
+    private func roleColors(_ rawRole: String) -> (tint: Color, text: Color) {
+        if rawRole.lowercased() == "owner" {
+            return (AppTheme.clay, AppTheme.clayText)
+        }
+        switch TeamInviteRole(rawCloudRole: rawRole) {
+        case .admin?:
+            return (AppTheme.olive, AppTheme.olive)
+        case .member?:
+            return (AppTheme.highlight, AppTheme.highlight)
+        case .viewer?, nil:
+            return (AppTheme.neutral, AppTheme.inkSecondary)
+        }
+    }
+
+    private func roleBadge(_ text: String, role rawRole: String) -> some View {
+        let colors = roleColors(rawRole)
+        return Text(text)
+            .font(.poppins(.caption, .semibold))
+            .foregroundStyle(colors.text)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(colors.tint.opacity(0.12), in: Capsule())
     }
 
     private func refreshData() async {
@@ -586,11 +627,23 @@ private enum TeamInviteRole: String, CaseIterable, Identifiable {
     var tintColor: Color {
         switch self {
         case .admin:
-            return Color(red: 0.79, green: 0.45, blue: 0.08)
+            return AppTheme.olive
         case .member:
-            return Color(red: 0.18, green: 0.47, blue: 0.86)
+            return AppTheme.highlight
         case .viewer:
-            return Color(red: 0.31, green: 0.58, blue: 0.49)
+            return AppTheme.neutral
+        }
+    }
+
+    /// Solid version of `tintColor` for the selected state, which sits under white text.
+    var fillColor: Color {
+        switch self {
+        case .admin:
+            return AppTheme.oliveFill
+        case .member:
+            return AppTheme.goldFill
+        case .viewer:
+            return AppTheme.neutralFill
         }
     }
 }

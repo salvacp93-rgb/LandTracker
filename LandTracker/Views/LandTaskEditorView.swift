@@ -70,7 +70,7 @@ struct LandTaskEditorView: View {
 
     var body: some View {
         Form {
-            Section(language.localized("Task", "Tarea")) {
+            Section {
                 Picker(language.localized("Type", "Tipo"), selection: $type) {
                     ForEach(LandTaskType.allCases) { value in
                         Label(value.displayName(language: language), systemImage: value.symbolName)
@@ -79,9 +79,12 @@ struct LandTaskEditorView: View {
                 }
 
                 TextField(language.localized("Title", "Título"), text: $title, prompt: Text(type.displayName(language: language)))
+            } header: {
+                AppSectionHeader(language.localized("Task", "Tarea"))
             }
+            .listRowBackground(AppTheme.card)
 
-            Section(language.localized("Schedule", "Planificación")) {
+            Section {
                 DatePicker(
                     language.localized("Due Date", "Fecha objetivo"),
                     selection: $dueDate,
@@ -89,6 +92,7 @@ struct LandTaskEditorView: View {
                 )
 
                 Toggle(language.localized("Reminder", "Recordatorio"), isOn: $wantsReminder)
+                    .tint(AppTheme.olive)
 
                 if wantsReminder {
                     DatePicker(
@@ -97,13 +101,22 @@ struct LandTaskEditorView: View {
                         displayedComponents: [.date, .hourAndMinute]
                     )
                 }
+            } header: {
+                AppSectionHeader(language.localized("Schedule", "Planificación"))
             }
+            .listRowBackground(AppTheme.card)
 
-            Section(language.localized("Notes", "Notas")) {
+            Section {
                 TextEditor(text: $notes)
                     .frame(minHeight: 110)
+            } header: {
+                AppSectionHeader(language.localized("Notes", "Notas"))
             }
+            .listRowBackground(AppTheme.card)
         }
+        .font(.poppins(.body))
+        .scrollContentBackground(.hidden)
+        .background(AppBackground())
         .navigationTitle(screenTitle)
         .onChange(of: dueDate) { _, newValue in
             guard wantsReminder else { return }

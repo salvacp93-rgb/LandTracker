@@ -32,9 +32,8 @@ struct LandsView: View {
     @State private var selectedSectionID: String?
     @State private var expandedSectionIDs: Set<String> = []
 
-    private let accentBlue = Color(red: 0.39, green: 0.49, blue: 0.64)
-    private let accentGreen = Color(red: 0.49, green: 0.57, blue: 0.66)
-    private let neutralTint = Color(red: 0.55, green: 0.60, blue: 0.68)
+    private let brandTint = AppTheme.olive
+    private let neutralTint = AppTheme.neutral
 
     private var language: AppLanguage {
         AppSettings.language(from: appLanguageRaw)
@@ -71,7 +70,7 @@ struct LandsView: View {
                 .padding(.bottom, 28)
             }
             .scrollBounceBehavior(.basedOnSize)
-            .background(Color(.systemGroupedBackground))
+            .background(AppBackground())
             .navigationTitle(language.localized("Lands", "Terrenos"))
             .searchable(
                 text: $searchText,
@@ -85,7 +84,7 @@ struct LandsView: View {
                     GroupDetailView(group: group)
                 } else {
                     Text(language.localized("Group not found", "Grupo no encontrado"))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
             }
             .toolbar {
@@ -274,7 +273,7 @@ struct LandsView: View {
                         LinearGradient(
                             colors: [
                                 Color.white.opacity(0.22),
-                                accentBlue.opacity(0.05)
+                                brandTint.opacity(0.05)
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
@@ -303,10 +302,10 @@ struct LandsView: View {
                     showingCreateLand = true
                 } label: {
                     Label(language.localized("Create land", "Crear terreno"), systemImage: "plus.circle.fill")
+                        .foregroundStyle(AppTheme.onBrand)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(neutralTint)
             }
         }
     }
@@ -415,7 +414,7 @@ struct LandsView: View {
         .padding(.top, 8)
         .padding(.horizontal, 4)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemGroupedBackground))
+        .background(AppTheme.backgroundTop)
     }
 
     private func landRow(_ land: Land, tint: Color) -> some View {
@@ -436,8 +435,8 @@ struct LandsView: View {
 
     private var emptyGroupRow: some View {
         Text(language.localized("No lands in this group yet", "Este grupo aún no tiene terrenos"))
-            .font(.footnote)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.footnote))
+            .foregroundStyle(AppTheme.inkSecondary)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
@@ -451,7 +450,7 @@ struct LandsView: View {
                 "Un grupo reúne varios terrenos con un color y totales compartidos."
             ),
             systemImage: "square.grid.2x2",
-            tint: accentBlue
+            tint: brandTint
         ) {
             Button {
                 showingCreateGroup = true
@@ -461,7 +460,7 @@ struct LandsView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.bordered)
-            .tint(accentBlue)
+            .tint(brandTint)
         }
     }
 
@@ -479,7 +478,7 @@ struct LandsView: View {
             title: nil,
             subtitle: nil,
             systemImage: "map.fill",
-            tint: accentBlue
+            tint: brandTint
         ) {
             if selectedSectionSummary != nil || selectedParcel != nil {
                 VStack(alignment: .leading, spacing: 10) {
@@ -507,7 +506,7 @@ struct LandsView: View {
                         resetMapSelection()
                     } label: {
                         Label(language.localized("Fit All", "Ver todo"), systemImage: "arrow.up.left.and.arrow.down.right")
-                            .font(.caption.weight(.semibold))
+                            .font(.poppins(.caption, .semibold))
                             .padding(.horizontal, 12)
                             .padding(.vertical, 9)
                             .frame(minHeight: 44)
@@ -517,7 +516,7 @@ struct LandsView: View {
                             )
                             .overlay(
                                 Capsule(style: .continuous)
-                                    .stroke(accentBlue.opacity(0.16), lineWidth: 1)
+                                    .stroke(brandTint.opacity(0.16), lineWidth: 1)
                             )
                     }
                     .buttonStyle(.plain)
@@ -559,15 +558,15 @@ struct LandsView: View {
             title: nil,
             subtitle: nil,
             systemImage: "scope",
-            tint: accentGreen
+            tint: brandTint
         ) {
             if browsableSections.isEmpty {
                 Text(language.localized(
                     "No lands available for this search.",
                     "No hay terrenos disponibles para esta búsqueda."
                 ))
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
             } else {
                 LazyVStack(spacing: 10) {
                     ForEach(browsableSections) { section in
@@ -949,19 +948,19 @@ private struct LandsSectionHeaderContent: View {
             if dynamicTypeSize.isAccessibilitySize {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(.headline)
+                        .font(.poppins(size: 20, .semibold, relativeTo: .title3))
                         .foregroundStyle(.primary)
                         .multilineTextAlignment(.leading)
 
                     Text(countText)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.subheadline))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
 
                 Spacer(minLength: 0)
             } else {
                 Text(title)
-                    .font(.headline)
+                    .font(.poppins(size: 20, .semibold, relativeTo: .title3))
                     .foregroundStyle(.primary)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
@@ -969,8 +968,8 @@ private struct LandsSectionHeaderContent: View {
                 Spacer(minLength: 8)
 
                 Text(countText)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.subheadline))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .lineLimit(1)
                     .fixedSize()
             }
@@ -978,7 +977,7 @@ private struct LandsSectionHeaderContent: View {
             if showsChevron {
                 Image(systemName: "chevron.right")
                     .font(.footnote.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppTheme.inkTertiary)
                     .accessibilityHidden(true)
             }
         }
@@ -1064,14 +1063,14 @@ private struct LandRowCard: View {
     private var titleBlock: some View {
         VStack(alignment: .leading, spacing: 3) {
             Text(land.name)
-                .font(.headline)
+                .font(.poppins(.headline))
                 .foregroundStyle(.primary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
 
             Text(subtitle)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
         }
@@ -1079,9 +1078,9 @@ private struct LandRowCard: View {
 
     private func areaLabel(_ text: String) -> some View {
         Text(text)
-            .font(.subheadline.weight(.medium))
+            .font(.poppins(.subheadline, .medium))
             .monospacedDigit()
-            .foregroundStyle(.secondary)
+            .foregroundStyle(AppTheme.inkSecondary)
             .lineLimit(1)
             .fixedSize()
     }
@@ -1139,7 +1138,7 @@ private struct LandsMapBrowserCard: View {
 
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(title)
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.poppins(.subheadline, .semibold))
                                     .foregroundStyle(.primary)
                                     .multilineTextAlignment(.leading)
 
@@ -1162,7 +1161,7 @@ private struct LandsMapBrowserCard: View {
                     Button(action: onFocusSection) {
                         Image(systemName: "scope")
                             .font(.caption.weight(.semibold))
-                            .foregroundStyle(isSelected ? tint : .secondary)
+                            .foregroundStyle(isSelected ? tint : AppTheme.inkSecondary)
                             .frame(width: 32, height: 32)
                             .background(
                                 RoundedRectangle(cornerRadius: 11, style: .continuous)
@@ -1228,7 +1227,7 @@ private struct CountBadge: View {
 
     var body: some View {
         Text(text)
-            .font(.caption.weight(.semibold))
+            .font(.poppins(.caption, .semibold))
             .lineLimit(1)
             .foregroundStyle(tint.opacity(0.9))
             .padding(.horizontal, 10)
@@ -1264,15 +1263,15 @@ private struct ParcelBrowserRow: View {
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(land.name)
-                            .font(.subheadline.weight(.semibold))
+                            .font(.poppins(.subheadline, .semibold))
                             .foregroundStyle(.primary)
                             .lineLimit(1)
                             .truncationMode(.tail)
                             .layoutPriority(1)
 
                         Text(land.locationText)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.poppins(.caption))
+                            .foregroundStyle(AppTheme.inkSecondary)
                             .lineLimit(1)
                             .truncationMode(.middle)
                     }
@@ -1369,12 +1368,12 @@ private struct GlassPill: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption2, .medium))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .lineLimit(1)
 
                 Text(value)
-                    .font(.caption.weight(.semibold))
+                    .font(.poppins(.caption, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
             }
@@ -1513,9 +1512,9 @@ private struct ExportDocument: FileDocument {
     )
 
     let ctx = container.mainContext
-    let group = LandGroup(name: "Cortijo San Marcos", colorHex: "#059669")
+    let group = LandGroup(name: "Cortijo San Marcos", colorHex: "#5C7048")
     ctx.insert(group)
-    ctx.insert(LandGroup(name: "Vega baja", colorHex: "#2D9CDB"))
+    ctx.insert(LandGroup(name: "Vega baja", colorHex: "#BF5B34"))
 
     let land = Land(
         name: "Cuartel Alto",

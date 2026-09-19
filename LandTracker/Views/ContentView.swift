@@ -20,20 +20,20 @@ struct ContentView: View {
                 DashboardView()
                     .tag(AppTab.dashboard)
                     .tabItem {
-                        Label(language.localized("Dashboard", "Dashboard"), systemImage: "rectangle.3.group.bubble.left.fill")
+                        Label(language.localized("Dashboard", "Dashboard"), image: "TabGrid")
                     }
 
                 LandsView()
                     .tag(AppTab.lands)
                     .tabItem {
-                        Label(language.localized("Lands", "Terrenos"), systemImage: "square.split.2x2")
+                        Label(language.localized("Lands", "Terrenos"), image: "TabDiamond")
                     }
 
                 if roleAccessViewModel.canViewEconomics {
                     InsightsView()
                         .tag(AppTab.insights)
                         .tabItem {
-                            Label(language.localized("Insights", "Estadísticas"), systemImage: "chart.bar.fill")
+                            Label(language.localized("Insights", "Estadísticas"), image: "TabChart")
                         }
                 }
 
@@ -41,7 +41,7 @@ struct ContentView: View {
                     TeamView()
                         .tag(AppTab.team)
                         .tabItem {
-                            Label(language.localized("Team", "Equipo"), systemImage: "person.2")
+                            Label(language.localized("Team", "Equipo"), image: "TabTeam")
                         }
                 }
             }

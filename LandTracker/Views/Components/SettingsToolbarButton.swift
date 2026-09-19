@@ -6,10 +6,13 @@ struct SettingsToolbarButton: View {
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "gearshape")
-                .font(.system(size: 16, weight: .semibold))
+            Image("IconGear")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 20, height: 20)
                 .frame(width: 30, height: 30)
-                .background(Color(.secondarySystemBackground), in: Circle())
+                .background(AppTheme.card, in: Circle())
+                .overlay(Circle().strokeBorder(AppTheme.hairline, lineWidth: 1))
         }
         .buttonStyle(.plain)
         .accessibilityLabel(language.localized("Settings", "Configuración"))

@@ -162,21 +162,21 @@ struct DashboardView: View {
                     title: language.localized("Groups", "Grupos"),
                     value: "\(groups.count)",
                     subtitle: language.localized("Structure buckets", "Estructura creada"),
-                    tint: Color(red: 0.19, green: 0.66, blue: 0.40)
+                    tint: AppTheme.olive
                 ),
                 DashboardMetricItem(
                     id: "area",
                     title: language.localized("Area", "Superficie"),
                     value: "\(AppSettings.areaValue(fromAcres: totalAreaAcres, system: measurementSystem).formatted(.number.precision(.fractionLength(1)))) \(AppSettings.areaShortUnit(system: measurementSystem))",
                     subtitle: language.localized("Across all lands", "En todos los terrenos"),
-                    tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                    tint: AppTheme.clay
                 ),
                 DashboardMetricItem(
                     id: "income",
                     title: language.localized("Income", "Ingresos"),
                     value: totalIncome.formatted(.currency(code: currencyCode)),
                     subtitle: language.localized("Annual total", "Total anual"),
-                    tint: Color(red: 0.08, green: 0.62, blue: 0.47)
+                    tint: AppTheme.positive
                 ),
                 DashboardMetricItem(
                     id: "margin",
@@ -184,8 +184,8 @@ struct DashboardView: View {
                     value: totalNetMargin.formatted(.currency(code: currencyCode)),
                     subtitle: language.localized("Income minus expenses", "Ingresos menos gastos"),
                     tint: totalNetMargin >= 0
-                        ? Color(red: 0.10, green: 0.58, blue: 0.38)
-                        : Color(red: 0.83, green: 0.24, blue: 0.27)
+                        ? AppTheme.positive
+                        : AppTheme.negative
                 ),
                 DashboardMetricItem(
                     id: "devices",
@@ -194,7 +194,7 @@ struct DashboardView: View {
                     subtitle: totalDeviceCount == 0
                         ? language.localized("No devices linked", "Sin dispositivos enlazados")
                         : language.localized("\(onlineDeviceCount) online", "\(onlineDeviceCount) en línea"),
-                    tint: Color(red: 0.16, green: 0.67, blue: 0.58)
+                    tint: AppTheme.highlight
                 )
             ]
 
@@ -205,7 +205,7 @@ struct DashboardView: View {
                         title: language.localized("Installed kW", "kW instalados"),
                         value: "\(totalInstalledCapacityKW.formatted(.number.precision(.fractionLength(1)))) kW",
                         subtitle: language.localized("Annual energy tracked", "Con energía anual registrada"),
-                        tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                        tint: AppTheme.warning
                     )
                 )
             } else {
@@ -218,8 +218,8 @@ struct DashboardView: View {
                             ? language.localized("No overdue items", "Sin tareas vencidas")
                             : language.localized("\(overdueTasks.count) overdue", "\(overdueTasks.count) vencidas"),
                         tint: overdueTasks.isEmpty
-                            ? Color(red: 0.12, green: 0.43, blue: 0.86)
-                            : Color(red: 0.91, green: 0.45, blue: 0.20)
+                            ? AppTheme.positive
+                            : AppTheme.negative
                     )
                 )
             }
@@ -233,21 +233,21 @@ struct DashboardView: View {
                 title: language.localized("Groups", "Grupos"),
                 value: "\(groups.count)",
                 subtitle: language.localized("Structure buckets", "Estructura creada"),
-                tint: Color(red: 0.19, green: 0.66, blue: 0.40)
+                tint: AppTheme.olive
             ),
             DashboardMetricItem(
                 id: "area",
                 title: language.localized("Area", "Superficie"),
                 value: "\(AppSettings.areaValue(fromAcres: totalAreaAcres, system: measurementSystem).formatted(.number.precision(.fractionLength(1)))) \(AppSettings.areaShortUnit(system: measurementSystem))",
                 subtitle: language.localized("Across all lands", "En todos los terrenos"),
-                tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                tint: AppTheme.clay
             ),
             DashboardMetricItem(
                 id: "pending_tasks",
                 title: language.localized("Pending Tasks", "Tareas pendientes"),
                 value: "\(pendingTasks.count)",
                 subtitle: language.localized("Ordered by due date", "Ordenadas por vencimiento"),
-                tint: Color(red: 0.16, green: 0.46, blue: 0.95)
+                tint: AppTheme.olive
             ),
             DashboardMetricItem(
                 id: "overdue",
@@ -255,8 +255,8 @@ struct DashboardView: View {
                 value: "\(overdueTasks.count)",
                 subtitle: language.localized("Need action first", "Atiéndelas primero"),
                 tint: overdueTasks.isEmpty
-                    ? Color(red: 0.16, green: 0.67, blue: 0.58)
-                    : Color(red: 0.91, green: 0.45, blue: 0.20)
+                    ? AppTheme.positive
+                    : AppTheme.negative
             ),
             DashboardMetricItem(
                 id: "devices",
@@ -265,7 +265,7 @@ struct DashboardView: View {
                 subtitle: totalDeviceCount == 0
                     ? language.localized("No devices linked", "Sin dispositivos enlazados")
                     : language.localized("\(onlineDeviceCount) online", "\(onlineDeviceCount) en línea"),
-                tint: Color(red: 0.16, green: 0.67, blue: 0.58)
+                tint: AppTheme.positive
             ),
             DashboardMetricItem(
                 id: "sync",
@@ -277,8 +277,8 @@ struct DashboardView: View {
                     ? language.localized("Cloud queue healthy", "Cola en buen estado")
                     : language.localized("\(syncErrorCount) issues", "\(syncErrorCount) incidencias"),
                 tint: syncErrorCount == 0
-                    ? Color(red: 0.57, green: 0.46, blue: 0.92)
-                    : Color(red: 0.83, green: 0.24, blue: 0.27)
+                    ? AppTheme.highlight
+                    : AppTheme.negative
             )
         ]
     }
@@ -296,7 +296,7 @@ struct DashboardView: View {
                         "\(overdueTasks.count) tareas ya han vencido y conviene revisarlas primero."
                     ),
                     systemImage: "exclamationmark.triangle.fill",
-                    tint: Color(red: 0.83, green: 0.24, blue: 0.27)
+                    tint: AppTheme.negative
                 )
             )
         }
@@ -311,7 +311,7 @@ struct DashboardView: View {
                         "\(dueTodayTasks.count) tareas vencen hoy y puedes resolverlas desde las fichas de terreno."
                     ),
                     systemImage: "calendar.badge.clock",
-                    tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                    tint: AppTheme.warning
                 )
             )
         }
@@ -326,7 +326,7 @@ struct DashboardView: View {
                         "\(syncErrorCount) cambios en cola tienen errores y pueden requerir reintento manual desde la cuenta."
                     ),
                     systemImage: "arrow.triangle.2.circlepath.circle.fill",
-                    tint: Color(red: 0.83, green: 0.24, blue: 0.27)
+                    tint: AppTheme.negative
                 )
             )
         } else if pendingSyncCount > 0 {
@@ -339,7 +339,7 @@ struct DashboardView: View {
                         "\(pendingSyncCount) cambios locales siguen pendientes de subir."
                     ),
                     systemImage: "icloud.and.arrow.up.fill",
-                    tint: Color(red: 0.57, green: 0.46, blue: 0.92)
+                    tint: AppTheme.highlight
                 )
             )
         }
@@ -354,7 +354,7 @@ struct DashboardView: View {
                         "\(offlineDeviceCount) dispositivos activos tienen señal antigua o error de enlace."
                     ),
                     systemImage: "dot.radiowaves.left.and.right",
-                    tint: Color(red: 0.91, green: 0.45, blue: 0.20)
+                    tint: AppTheme.warning
                 )
             )
         }
@@ -369,7 +369,7 @@ struct DashboardView: View {
                         "\(lowBatteryDeviceCount) dispositivos reportan batería por debajo del 20%."
                     ),
                     systemImage: "battery.25",
-                    tint: Color(red: 0.95, green: 0.58, blue: 0.20)
+                    tint: AppTheme.warning
                 )
             )
         }
@@ -384,7 +384,7 @@ struct DashboardView: View {
                         "\(ungroupedLandCount) terrenos siguen sin grupo, lo que dificulta leer la estructura."
                     ),
                     systemImage: "square.grid.2x2",
-                    tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                    tint: AppTheme.olive
                 )
             )
         }
@@ -573,7 +573,7 @@ struct DashboardView: View {
                 .padding(.bottom, 28)
             }
             .scrollBounceBehavior(.basedOnSize)
-            .background(Color(.systemGroupedBackground))
+            .background(AppBackground())
             .navigationTitle(language.localized("Dashboard", "Dashboard"))
             .navigationDestination(for: Land.self) { land in
                 LandDetailView(land: land)
@@ -617,8 +617,8 @@ struct DashboardView: View {
                 .fill(
                     LinearGradient(
                         colors: [
-                            Color(red: 0.12, green: 0.43, blue: 0.86),
-                            Color(red: 0.16, green: 0.67, blue: 0.58)
+                            AppTheme.oliveDeepFill,
+                            AppTheme.oliveFill
                         ],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
@@ -639,11 +639,11 @@ struct DashboardView: View {
                                 ? language.localized("Dual-Use Workspace", "Espacio de doble uso")
                                 : language.localized("Visual Parcel Workspace", "Espacio visual de parcelas")
                         )
-                            .font(.title3.weight(.semibold))
+                            .font(.poppins(.title3, .semibold))
                             .foregroundStyle(.white)
 
                         Text(heroSubtitle)
-                            .font(.subheadline)
+                            .font(.poppins(.subheadline))
                             .foregroundStyle(.white.opacity(0.88))
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -654,21 +654,21 @@ struct DashboardView: View {
                         title: language.localized("Lands", "Terrenos"),
                         value: "\(lands.count)",
                         systemImage: "leaf.fill",
-                        colors: [Color(red: 0.17, green: 0.55, blue: 0.93), Color(red: 0.13, green: 0.44, blue: 0.82)]
+                        colors: [AppTheme.clayFill, AppTheme.clayDeepFill]
                     )
 
                     GlassHeroSummaryTile(
                         title: language.localized("Groups", "Grupos"),
                         value: "\(groups.count)",
                         systemImage: "square.grid.2x2.fill",
-                        colors: [Color(red: 0.19, green: 0.66, blue: 0.40), Color(red: 0.16, green: 0.54, blue: 0.31)]
+                        colors: [AppTheme.goldFill, AppTheme.goldDeepFill]
                     )
 
                     GlassHeroSummaryTile(
                         title: language.localized("Pending Tasks", "Tareas pendientes"),
                         value: "\(pendingTasks.count)",
                         systemImage: "checklist",
-                        colors: [Color(red: 0.96, green: 0.66, blue: 0.18), Color(red: 0.91, green: 0.45, blue: 0.20)]
+                        colors: [AppTheme.warningFill, AppTheme.clayDeepFill]
                     )
 
                     GlassHeroSummaryTile(
@@ -677,7 +677,7 @@ struct DashboardView: View {
                             ? language.localized("Ready", "Lista")
                             : "\(pendingSyncCount)",
                         systemImage: "arrow.triangle.2.circlepath",
-                        colors: [Color(red: 0.57, green: 0.46, blue: 0.92), Color(red: 0.34, green: 0.39, blue: 0.82)]
+                        colors: [AppTheme.oliveFill, AppTheme.oliveDeepFill]
                     )
                 }
             }
@@ -694,7 +694,7 @@ struct DashboardView: View {
             title: language.localized("Agrovoltaic Lens", "Lente agrovoltaica"),
             subtitle: dualUseLensSubtitle,
             systemImage: "solarpanel",
-            tint: Color(red: 0.86, green: 0.46, blue: 0.12)
+            tint: AppTheme.clay
         ) {
             if lands.isEmpty {
                 dashboardEmptyState(
@@ -704,7 +704,7 @@ struct DashboardView: View {
                         "Crea una parcela y aquí aparecerán sus primeras señales de preparación agrovoltaica."
                     ),
                     systemImage: "map.fill",
-                    tint: Color(red: 0.86, green: 0.46, blue: 0.12)
+                    tint: AppTheme.clay
                 )
             } else {
                 LazyVGrid(columns: heroGridColumns, spacing: 10) {
@@ -714,7 +714,7 @@ struct DashboardView: View {
                             title: language.localized("Agrovoltaic", "Agrovoltaicas"),
                             value: "\(agrovoltaicLandCount)",
                             subtitle: language.localized("Parcels already tagged", "Parcelas ya etiquetadas"),
-                            tint: Color(red: 0.86, green: 0.46, blue: 0.12)
+                            tint: AppTheme.clay
                         )
                     )
 
@@ -724,7 +724,7 @@ struct DashboardView: View {
                             title: language.localized("Cadastre", "Catastro"),
                             value: "\(landsWithCadastreCount)",
                             subtitle: language.localized("With mapped footprint", "Con huella mapeada"),
-                            tint: Color(red: 0.16, green: 0.46, blue: 0.95)
+                            tint: AppTheme.olive
                         )
                     )
 
@@ -734,7 +734,7 @@ struct DashboardView: View {
                             title: language.localized("Field Records", "Evidencia"),
                             value: "\(landsWithHistoryCount)",
                             subtitle: language.localized("With historical data", "Con datos históricos"),
-                            tint: Color(red: 0.19, green: 0.66, blue: 0.40)
+                            tint: AppTheme.positive
                         )
                     )
 
@@ -744,14 +744,14 @@ struct DashboardView: View {
                             title: language.localized("Telemetry", "Telemetría"),
                             value: "\(monitoredLandCount)",
                             subtitle: language.localized("Parcels with devices", "Parcelas con dispositivos"),
-                            tint: Color(red: 0.57, green: 0.46, blue: 0.92)
+                            tint: AppTheme.highlight
                         )
                     )
                 }
 
                 Text(dualUseLensNarrative)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -762,7 +762,7 @@ struct DashboardView: View {
             title: language.localized("Attention Center", "Centro de atención"),
             subtitle: language.localized("The highest-priority signals across tasks, sync and devices.", "Las señales de mayor prioridad entre tareas, sincronización y dispositivos."),
             systemImage: "exclamationmark.bubble.fill",
-            tint: Color(red: 0.91, green: 0.45, blue: 0.20)
+            tint: AppTheme.warning
         ) {
             if attentionAlerts.isEmpty {
                 dashboardEmptyState(
@@ -773,7 +773,7 @@ struct DashboardView: View {
                         ? language.localized("Create a land to start surfacing operational alerts here.", "Crea un terreno para que aquí empiecen a aparecer alertas operativas.")
                         : language.localized("No overdue tasks, no sync blockers and no device warnings at the moment.", "Ahora mismo no hay tareas vencidas, bloqueos de sincronización ni avisos de dispositivos."),
                     systemImage: lands.isEmpty ? "leaf.circle.fill" : "checkmark.seal.fill",
-                    tint: lands.isEmpty ? Color(red: 0.12, green: 0.43, blue: 0.86) : Color(red: 0.16, green: 0.67, blue: 0.58)
+                    tint: lands.isEmpty ? AppTheme.olive : AppTheme.positive
                 )
             } else {
                 VStack(spacing: 10) {
@@ -796,10 +796,10 @@ struct DashboardView: View {
                     showingCreateLand = true
                 } label: {
                     Label(language.localized("Create first land", "Crear primer terreno"), systemImage: "plus.circle.fill")
+                        .foregroundStyle(AppTheme.onBrand)
                         .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(Color(red: 0.12, green: 0.43, blue: 0.86))
             }
         }
     }
@@ -821,7 +821,7 @@ struct DashboardView: View {
                 )
                 : language.localized("Quick snapshot for structure, workload and operational health.", "Vista rápida de estructura, carga de trabajo y salud operativa."),
             systemImage: "chart.bar.doc.horizontal.fill",
-            tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+            tint: AppTheme.olive
         ) {
             LazyVGrid(columns: heroGridColumns, spacing: 10) {
                 ForEach(overviewMetrics) { item in
@@ -836,27 +836,27 @@ struct DashboardView: View {
             title: language.localized("Income Trend", "Tendencia de ingresos"),
             subtitle: language.localized("Aggregated from the latest six registered historical months.", "Agregado a partir de los últimos seis meses históricos registrados."),
             systemImage: "chart.xyaxis.line",
-            tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+            tint: AppTheme.positive
         ) {
             Chart(incomeTrendPoints) { point in
                 AreaMark(
                     x: .value("Month", point.date, unit: .month),
                     y: .value("Income", point.value)
                 )
-                .foregroundStyle(Color(red: 0.96, green: 0.66, blue: 0.18).opacity(0.16))
+                .foregroundStyle(AppTheme.positive.opacity(0.16))
 
                 LineMark(
                     x: .value("Month", point.date, unit: .month),
                     y: .value("Income", point.value)
                 )
                 .interpolationMethod(.catmullRom)
-                .foregroundStyle(Color(red: 0.96, green: 0.66, blue: 0.18))
+                .foregroundStyle(AppTheme.positive)
 
                 PointMark(
                     x: .value("Month", point.date, unit: .month),
                     y: .value("Income", point.value)
                 )
-                .foregroundStyle(Color(red: 0.91, green: 0.45, blue: 0.20))
+                .foregroundStyle(AppTheme.positive)
             }
             .frame(height: 180)
             .chartYAxis {
@@ -864,7 +864,7 @@ struct DashboardView: View {
             }
             .chartXAxis {
                 AxisMarks(values: .automatic(desiredCount: min(6, incomeTrendPoints.count))) { value in
-                    AxisGridLine().foregroundStyle(.secondary.opacity(0.16))
+                    AxisGridLine().foregroundStyle(AppTheme.inkSecondary.opacity(0.16))
                     AxisValueLabel(format: .dateTime.month(.abbreviated))
                 }
             }
@@ -873,13 +873,13 @@ struct DashboardView: View {
                 DashboardMiniHighlight(
                     title: language.localized("Latest Month", "Último mes"),
                     value: (incomeTrendPoints.last?.value ?? 0).formatted(.currency(code: currencyCode)),
-                    tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                    tint: AppTheme.positive
                 )
 
                 DashboardMiniHighlight(
                     title: language.localized("6M Total", "Total 6M"),
                     value: incomeTrendPoints.reduce(0) { $0 + $1.value }.formatted(.currency(code: currencyCode)),
-                    tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                    tint: AppTheme.olive
                 )
             }
         }
@@ -890,7 +890,7 @@ struct DashboardView: View {
             title: language.localized("Upcoming Tasks", "Próximas tareas"),
             subtitle: language.localized("Ordered globally by due date so you can start from the nearest commitments.", "Ordenadas globalmente por vencimiento para empezar por los compromisos más cercanos."),
             systemImage: "calendar.badge.clock",
-            tint: Color(red: 0.16, green: 0.46, blue: 0.95)
+            tint: AppTheme.olive
         ) {
             if upcomingTasks.isEmpty {
                 dashboardEmptyState(
@@ -899,7 +899,7 @@ struct DashboardView: View {
                         ? language.localized("Create a land first, then add operational tasks from its detail screen.", "Crea primero un terreno y luego añade tareas operativas desde su ficha.")
                         : language.localized("Open any land to create irrigation, pruning, harvest or maintenance follow-up.", "Abre cualquier terreno para crear seguimientos de riego, poda, cosecha o mantenimiento."),
                     systemImage: "checkmark.circle.fill",
-                    tint: Color(red: 0.16, green: 0.67, blue: 0.58)
+                    tint: AppTheme.positive
                 )
             } else {
                 VStack(spacing: 10) {
@@ -916,14 +916,14 @@ struct DashboardView: View {
             title: language.localized("Lands Needing Attention", "Terrenos que requieren atención"),
             subtitle: language.localized("Prioritized by overdue work, device health and structural gaps.", "Priorizados por tareas vencidas, salud de dispositivos y huecos estructurales."),
             systemImage: "scope",
-            tint: Color(red: 0.57, green: 0.46, blue: 0.92)
+            tint: AppTheme.highlight
         ) {
             if attentionLands.isEmpty {
                 dashboardEmptyState(
                     title: language.localized("No critical lands right now", "Ahora mismo no hay terrenos críticos"),
                     subtitle: language.localized("As soon as tasks, device issues or structural gaps appear, they will surface here.", "En cuanto aparezcan tareas, incidencias de dispositivos o huecos estructurales, los verás aquí."),
                     systemImage: "leaf.fill",
-                    tint: Color(red: 0.16, green: 0.67, blue: 0.58)
+                    tint: AppTheme.positive
                 )
             } else {
                 VStack(spacing: 10) {
@@ -948,7 +948,7 @@ struct DashboardView: View {
             title: language.localized("Quick Actions", "Acciones rápidas"),
             subtitle: language.localized("Shortcuts for the most common moves without leaving the dashboard.", "Atajos para los movimientos más comunes sin salir del dashboard."),
             systemImage: "bolt.circle.fill",
-            tint: Color(red: 0.16, green: 0.67, blue: 0.58)
+            tint: AppTheme.positive
         ) {
             LazyVGrid(columns: heroGridColumns, spacing: 10) {
                 if roleAccessViewModel.canManageStructure {
@@ -956,7 +956,7 @@ struct DashboardView: View {
                         title: language.localized("New Land", "Nuevo terreno"),
                         subtitle: language.localized("Add parcel data", "Añadir parcela"),
                         systemImage: "plus.circle.fill",
-                        tint: Color(red: 0.12, green: 0.43, blue: 0.86)
+                        tint: AppTheme.clay
                     ) {
                         showingCreateLand = true
                     }
@@ -965,7 +965,7 @@ struct DashboardView: View {
                         title: language.localized("New Group", "Nuevo grupo"),
                         subtitle: language.localized("Organize lands", "Organizar terrenos"),
                         systemImage: "square.grid.2x2.fill",
-                        tint: Color(red: 0.19, green: 0.66, blue: 0.40)
+                        tint: AppTheme.olive
                     ) {
                         showingCreateGroup = true
                     }
@@ -976,7 +976,7 @@ struct DashboardView: View {
                         title: language.localized("Team", "Equipo"),
                         subtitle: language.localized("Members and invites", "Miembros e invitaciones"),
                         systemImage: "person.2.fill",
-                        tint: Color(red: 0.20, green: 0.66, blue: 0.39)
+                        tint: AppTheme.highlight
                     ) {
                         showingTeam = true
                     }
@@ -989,8 +989,8 @@ struct DashboardView: View {
                         : language.localized("\(pendingSyncCount) pending", "\(pendingSyncCount) pendientes"),
                     systemImage: pendingSyncCount == 0 ? "person.crop.circle" : "arrow.triangle.2.circlepath.circle.fill",
                     tint: pendingSyncCount == 0
-                        ? Color(red: 0.57, green: 0.46, blue: 0.92)
-                        : Color(red: 0.91, green: 0.45, blue: 0.20)
+                        ? AppTheme.positive
+                        : AppTheme.warning
                 ) {
                     showingAccount = true
                 }
@@ -999,7 +999,7 @@ struct DashboardView: View {
                     title: language.localized("Settings", "Ajustes"),
                     subtitle: language.localized("Language, units, currency", "Idioma, unidades, moneda"),
                     systemImage: "slider.horizontal.3",
-                    tint: Color(red: 0.40, green: 0.45, blue: 0.55)
+                    tint: AppTheme.neutral
                 ) {
                     showingSettings = true
                 }
@@ -1104,14 +1104,23 @@ struct DashboardView: View {
 
     private func taskStatusTint(for task: LandTask) -> Color {
         if task.dueDate < startOfToday {
-            return Color(red: 0.83, green: 0.24, blue: 0.27)
+            return AppTheme.negative
         }
 
         if calendar.isDateInToday(task.dueDate) {
-            return Color(red: 0.91, green: 0.45, blue: 0.20)
+            return AppTheme.warning
         }
 
-        return Color(red: 0.12, green: 0.43, blue: 0.86)
+        return AppTheme.inkSecondary
+    }
+
+    /// Text version of `taskStatusTint`: due-today amber is too light as small text on light surfaces.
+    private func taskStatusTextTint(for task: LandTask) -> Color {
+        if calendar.isDateInToday(task.dueDate) {
+            return AppTheme.warningText
+        }
+
+        return taskStatusTint(for: task)
     }
 
     @ViewBuilder
@@ -1136,21 +1145,21 @@ struct DashboardView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(task.title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
                 Text(task.land?.name ?? language.localized("No land assigned", "Sin terreno asignado"))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .lineLimit(1)
             }
 
             Spacer(minLength: 0)
 
             Text(taskStatusLabel(for: task))
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(taskStatusTint(for: task))
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(taskStatusTextTint(for: task))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
                 .background(taskStatusTint(for: task).opacity(0.12), in: Capsule())
@@ -1174,12 +1183,12 @@ struct DashboardView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(item.title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
 
                 Text(item.detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -1210,12 +1219,12 @@ struct DashboardView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
 
                 Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -1275,19 +1284,19 @@ private struct DashboardMetricTile: View {
                 .foregroundStyle(item.tint)
 
             Text(item.title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .lineLimit(1)
 
             Text(item.value)
-                .font(.headline.weight(.semibold))
+                .font(.poppins(size: 20, .bold, relativeTo: .title3))
                 .foregroundStyle(.primary)
-                .lineLimit(2)
-                .minimumScaleFactor(0.82)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
 
             Text(item.subtitle)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption2))
+                .foregroundStyle(AppTheme.inkSecondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.horizontal, 14)
@@ -1309,11 +1318,11 @@ private struct DashboardMiniHighlight: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
 
             Text(value)
-                .font(.subheadline.weight(.semibold))
+                .font(.poppins(.subheadline, .semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.82)
@@ -1339,27 +1348,27 @@ private struct DashboardLandAttentionRow: View {
         HStack(spacing: 12) {
             Image(systemName: "leaf.fill")
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Color(red: 0.57, green: 0.46, blue: 0.92))
+                .foregroundStyle(AppTheme.highlight)
                 .frame(width: 38, height: 38)
                 .background(
-                    Color(red: 0.57, green: 0.46, blue: 0.92).opacity(0.14),
+                    AppTheme.highlight.opacity(0.14),
                     in: RoundedRectangle(cornerRadius: 13, style: .continuous)
                 )
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.land.name)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
                 Text(item.land.group?.name ?? language.localized("Ungrouped", "Sin grupo"))
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .medium))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .lineLimit(1)
 
                 Text(issueSummary)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -1367,17 +1376,17 @@ private struct DashboardLandAttentionRow: View {
 
             if item.hasNegativeMargin {
                 Text(item.land.annualNetMargin.formatted(.currency(code: currencyCode)))
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.red)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(AppTheme.negative)
                     .multilineTextAlignment(.trailing)
             } else if item.offlineDevices > 0 || item.overdueTasks > 0 {
                 Text("\(max(item.offlineDevices, item.overdueTasks))")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(Color(red: 0.91, green: 0.45, blue: 0.20))
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(AppTheme.warningText)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
-                        Color(red: 0.91, green: 0.45, blue: 0.20).opacity(0.12),
+                        AppTheme.warning.opacity(0.12),
                         in: Capsule()
                     )
             }
@@ -1388,7 +1397,7 @@ private struct DashboardLandAttentionRow: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(Color(red: 0.57, green: 0.46, blue: 0.92).opacity(0.14), lineWidth: 1)
+                .stroke(AppTheme.highlight.opacity(0.14), lineWidth: 1)
         )
     }
 }
@@ -1410,13 +1419,13 @@ private struct DashboardQuickActionButton: View {
                     .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                 Text(title)
-                    .font(.subheadline.weight(.semibold))
+                    .font(.poppins(.subheadline, .semibold))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
                 Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption))
+                    .foregroundStyle(AppTheme.inkSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, 14)

@@ -16,19 +16,39 @@ extension Color {
             (r, g, b) = (0, 122, 255)
         }
 
+        // Palette colors resolve to the adaptive AppTheme tokens (same light value, lighter in
+        // dark mode) so tints, dots and text keep enough contrast on dark surfaces.
+        if let token = Self.appThemeToken(forHex: cleaned) {
+            self = token
+            return
+        }
+
         self.init(red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255)
+    }
+
+    private static func appThemeToken(forHex hex: String) -> Color? {
+        switch hex.uppercased() {
+        case "5C7048": return AppTheme.olive
+        case "BF5B34": return AppTheme.clay
+        case "B8842C": return AppTheme.warning
+        case "A34A3E": return AppTheme.negative
+        case "8B6B2E": return AppTheme.highlight
+        case "6A7045": return AppTheme.wordmark
+        case "8E8A82": return AppTheme.neutral
+        default: return nil
+        }
     }
 }
 
 struct GroupColorPalette {
     static let hexValues = [
-        "2D9CDB",
-        "27AE60",
-        "F2994A",
-        "EB5757",
-        "9B51E0",
-        "56CCF2",
-        "6FCF97",
-        "F2C94C"
+        "5C7048",
+        "BF5B34",
+        "B8842C",
+        "A34A3E",
+        "8B6B2E",
+        "6A7045",
+        "6F8791",
+        "8E8A82"
     ]
 }

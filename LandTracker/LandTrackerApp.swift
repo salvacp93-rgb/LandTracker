@@ -8,6 +8,8 @@ struct LandTrackerApp: App {
     @StateObject private var roleAccessViewModel = RoleAccessViewModel()
 
     init() {
+        AppTheme.registerFonts()
+        AppTheme.configureNavigationTitleFonts()
         do {
             let schema = Schema([Land.self, LandGroup.self, LandHistoryEntry.self, LandTask.self, PendingSyncOperation.self])
             let configuration = ModelConfiguration(schema: schema)

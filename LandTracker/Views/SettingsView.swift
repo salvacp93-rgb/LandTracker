@@ -21,11 +21,12 @@ struct SettingsView: View {
                     currencyCard
                 }
             }
+            .font(.poppins(.body))
             .padding(16)
             .padding(.bottom, 28)
         }
         .scrollBounceBehavior(.basedOnSize)
-        .background(Color(.systemGroupedBackground))
+        .background(AppBackground())
         .navigationTitle(language.localized("Settings", "Configuración"))
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -41,12 +42,12 @@ struct SettingsView: View {
             title: language.localized("Language", "Idioma"),
             subtitle: language.localized("Pick the language used across the interface.", "Elige el idioma que se usa en toda la interfaz."),
             systemImage: "globe",
-            tint: Color(red: 0.16, green: 0.55, blue: 0.93)
+            tint: AppTheme.olive
         ) {
             settingsFieldShell(
                 label: language.localized("App language", "Idioma de la app"),
                 systemImage: "textformat",
-                tint: Color(red: 0.16, green: 0.55, blue: 0.93)
+                tint: AppTheme.olive
             ) {
                 Picker(
                     language.localized("App language", "Idioma de la app"),
@@ -66,12 +67,12 @@ struct SettingsView: View {
             title: language.localized("Units", "Unidades"),
             subtitle: language.localized("Choose how area and related values are displayed.", "Elige como se muestran la superficie y los valores relacionados."),
             systemImage: "ruler.fill",
-            tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+            tint: AppTheme.clay
         ) {
             settingsFieldShell(
                 label: language.localized("Measurement system", "Sistema de medidas"),
                 systemImage: "scalemass.fill",
-                tint: Color(red: 0.96, green: 0.66, blue: 0.18)
+                tint: AppTheme.clay
             ) {
                 Picker(
                     language.localized("Measurement system", "Sistema de medidas"),
@@ -91,12 +92,12 @@ struct SettingsView: View {
             title: language.localized("Currency", "Moneda"),
             subtitle: language.localized("Financial figures keep this display currency across lists and detail views.", "Las cifras economicas mantienen esta moneda en listas y vistas de detalle."),
             systemImage: "banknote.fill",
-            tint: Color(red: 0.20, green: 0.66, blue: 0.39)
+            tint: AppTheme.highlight
         ) {
             settingsFieldShell(
                 label: language.localized("Display currency", "Moneda para cifras"),
                 systemImage: "creditcard.fill",
-                tint: Color(red: 0.20, green: 0.66, blue: 0.39)
+                tint: AppTheme.highlight
             ) {
                 Picker(
                     language.localized("Display currency", "Moneda para cifras"),
@@ -118,9 +119,14 @@ struct SettingsView: View {
         @ViewBuilder content: () -> Content
     ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(label, systemImage: systemImage)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(tint)
+            Label {
+                Text(label)
+                    .font(.poppins(.caption, .semibold))
+            } icon: {
+                Image(systemName: systemImage)
+                    .font(.caption.weight(.semibold))
+            }
+            .foregroundStyle(tint)
 
             content()
                 .padding(.horizontal, 14)

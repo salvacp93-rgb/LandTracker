@@ -67,7 +67,7 @@ struct DevicePairingAssistantView: View {
             controls
         }
         .padding(16)
-        .background(Color(.systemGroupedBackground))
+        .background(AppBackground())
         .navigationTitle(language.localized("Pair Device", "Enlazar dispositivo"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -105,18 +105,18 @@ struct DevicePairingAssistantView: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(language.localized("Quick setup assistant", "Asistente de configuración rápida"))
-                    .font(.headline)
+                    .font(.poppins(.headline))
                 Spacer()
                 Text(
                     language.localized("Step", "Paso") +
                     " \(currentStepNumber)/\(totalSteps)"
                 )
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
             }
 
             ProgressView(value: progressValue)
-                .tint(Color.blue)
+                .tint(AppTheme.olive)
         }
     }
 
@@ -127,8 +127,8 @@ struct DevicePairingAssistantView: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                Color(red: 0.07, green: 0.45, blue: 0.87),
-                                Color(red: 0.11, green: 0.68, blue: 0.53)
+                                AppTheme.oliveFill,
+                                AppTheme.oliveDeepFill
                             ],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
@@ -139,7 +139,7 @@ struct DevicePairingAssistantView: View {
                         .font(.system(size: 36))
                         .foregroundStyle(.white)
                     Text(language.localized("We will guide you in 2 minutes.", "Te guiaremos en 2 minutos."))
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                         .foregroundStyle(.white)
                 }
                 .padding(16)
@@ -152,8 +152,8 @@ struct DevicePairingAssistantView: View {
                     "No necesitas conocimientos técnicos. Sigue los pasos y crearemos el dispositivo por ti."
                 )
             )
-            .font(.subheadline)
-            .foregroundStyle(.secondary)
+            .font(.poppins(.subheadline))
+            .foregroundStyle(AppTheme.inkSecondary)
 
             assistantHint(
                 icon: "lightbulb.fill",
@@ -168,7 +168,7 @@ struct DevicePairingAssistantView: View {
     private var methodStep: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(language.localized("How does this device send data?", "¿Cómo envía datos este dispositivo?"))
-                .font(.headline)
+                .font(.poppins(.headline))
 
             MethodCard(
                 isSelected: linkMethod == .bluetooth,
@@ -223,11 +223,11 @@ struct DevicePairingAssistantView: View {
     private var prepareStep: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(language.localized("Preparation", "Preparación"))
-                .font(.headline)
+                .font(.poppins(.headline))
 
             Text(preparationDescription)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
 
             if linkMethod == .manual {
                 assistantHint(
@@ -249,6 +249,8 @@ struct DevicePairingAssistantView: View {
                         isOn: $remoteConnectionConfirmed
                     )
                     .toggleStyle(.switch)
+                    .tint(AppTheme.olive)
+                    .font(.poppins(.body))
                 }
                 .padding(12)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -259,7 +261,7 @@ struct DevicePairingAssistantView: View {
     private var detailsStep: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(language.localized("Final details", "Detalles finales"))
-                .font(.headline)
+                .font(.poppins(.headline))
 
             PairingField(
                 label: language.localized("What name should we use?", "¿Qué nombre quieres usar?"),
@@ -269,8 +271,8 @@ struct DevicePairingAssistantView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(language.localized("Device type", "Tipo de dispositivo"))
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                    .font(.poppins(.caption, .semibold))
+                    .foregroundStyle(AppTheme.inkSecondary)
                 Picker(language.localized("Device type", "Tipo de dispositivo"), selection: $deviceType) {
                     ForEach(LandDeviceType.allCases) { type in
                         Label(type.displayName(language: language), systemImage: type.symbolName)
@@ -280,7 +282,11 @@ struct DevicePairingAssistantView: View {
                 .pickerStyle(.menu)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 10)
-                .background(Color.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(AppTheme.hairline, lineWidth: 1)
+                )
             }
         }
     }
@@ -291,6 +297,7 @@ struct DevicePairingAssistantView: View {
                 Button(language.localized("Back", "Atrás")) {
                     previousStep()
                 }
+                .font(.poppins(.body, .medium))
                 .buttonStyle(.bordered)
             }
 
@@ -303,6 +310,8 @@ struct DevicePairingAssistantView: View {
                     nextStep()
                 }
             }
+            .font(.poppins(.body, .semibold))
+            .foregroundStyle(AppTheme.onBrand)
             .buttonStyle(.borderedProminent)
             .disabled(!canMoveForward)
         }
@@ -460,11 +469,11 @@ struct DevicePairingAssistantView: View {
     private func assistantHint(icon: String, text: String) -> some View {
         HStack(alignment: .top, spacing: 8) {
             Image(systemName: icon)
-                .foregroundStyle(.blue)
+                .foregroundStyle(AppTheme.olive)
                 .padding(.top, 2)
             Text(text)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
+                .font(.poppins(.subheadline))
+                .foregroundStyle(AppTheme.inkSecondary)
         }
         .padding(12)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -490,27 +499,31 @@ private struct MethodCard: View {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: icon)
                     .font(.headline)
-                    .foregroundStyle(isSelected ? .blue : .secondary)
+                    .foregroundStyle(isSelected ? AppTheme.olive : AppTheme.inkSecondary)
                     .frame(width: 24)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(.subheadline.weight(.semibold))
+                        .font(.poppins(.subheadline, .semibold))
                         .foregroundStyle(.primary)
                     Text(subtitle)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.poppins(.caption))
+                        .foregroundStyle(AppTheme.inkSecondary)
                 }
 
                 Spacer()
 
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .foregroundStyle(isSelected ? .blue : .secondary)
+                    .foregroundStyle(isSelected ? AppTheme.olive : AppTheme.inkSecondary)
             }
             .padding(12)
             .background(
-                isSelected ? Color.blue.opacity(0.12) : Color.primary.opacity(0.05),
+                isSelected ? AppTheme.olive.opacity(0.12) : AppTheme.card,
                 in: RoundedRectangle(cornerRadius: 12, style: .continuous)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(isSelected ? AppTheme.olive.opacity(0.35) : AppTheme.hairline, lineWidth: 1)
             )
         }
         .buttonStyle(.plain)
@@ -529,19 +542,24 @@ private struct PairingField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(label)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .font(.poppins(.caption, .semibold))
+                .foregroundStyle(AppTheme.inkSecondary)
 
             HStack(spacing: 8) {
                 TextField(placeholder, text: $text)
+                    .font(.poppins(.body))
                 if isFilled {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(AppTheme.positive)
                 }
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .background(Color.primary.opacity(0.06), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(AppTheme.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(AppTheme.hairline, lineWidth: 1)
+            )
         }
     }
 }

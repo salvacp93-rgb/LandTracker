@@ -80,7 +80,7 @@ struct HistoryEntryEditorView: View {
 
     var body: some View {
         Form {
-            Section(language.localized("Period", "Periodo")) {
+            Section {
                 Picker(language.localized("Month", "Mes"), selection: $month) {
                     ForEach(1...12, id: \.self) { value in
                         Text(Self.monthNames[value - 1]).tag(value)
@@ -90,9 +90,12 @@ struct HistoryEntryEditorView: View {
                 Stepper(value: $year, in: 2000...2100) {
                     Text("\(language.localized("Year", "Año")): \(year)")
                 }
+            } header: {
+                AppSectionHeader(language.localized("Period", "Periodo"))
             }
+            .listRowBackground(AppTheme.card)
 
-            Section(language.localized("Metrics", "Métricas")) {
+            Section {
                 TextField(language.localized("Income", "Ingresos"), value: $incomeAmount, format: .currency(code: currencyCode))
                     .keyboardType(.decimalPad)
 
@@ -103,13 +106,22 @@ struct HistoryEntryEditorView: View {
 
                 TextField(language.localized("Electricity (kWh)", "Electricidad (kWh)"), value: $electricityKWh, format: .number)
                     .keyboardType(.decimalPad)
+            } header: {
+                AppSectionHeader(language.localized("Metrics", "Métricas"))
             }
+            .listRowBackground(AppTheme.card)
 
-            Section(language.localized("Notes", "Notas")) {
+            Section {
                 TextEditor(text: $notes)
                     .frame(minHeight: 110)
+            } header: {
+                AppSectionHeader(language.localized("Notes", "Notas"))
             }
+            .listRowBackground(AppTheme.card)
         }
+        .font(.poppins(.body))
+        .scrollContentBackground(.hidden)
+        .background(AppBackground())
         .navigationTitle(title)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
