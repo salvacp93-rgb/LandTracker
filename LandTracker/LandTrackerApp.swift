@@ -37,6 +37,11 @@ struct RootView: View {
     @State private var showGlassTransition = false
     @State private var glassPulseActive = false
     @State private var overlayDismissTask: Task<Void, Never>?
+    @AppStorage(AccountPreferences.appLanguageKey) private var appLanguageRaw = AppSettings.defaultLanguage.rawValue
+
+    private var language: AppLanguage {
+        AppSettings.language(from: appLanguageRaw)
+    }
 
     var body: some View {
         ZStack {
@@ -68,6 +73,42 @@ struct RootView: View {
         }
         .onDisappear {
             overlayDismissTask?.cancel()
+        }
+        .onOpenURL { url in
+            Task { await authViewModel.handleIncomingURL(url) }
+        }
+        .sheet(isPresented: $authViewModel.isSettingNewPassword) {
+            ResetPasswordView(viewModel: authViewModel)
+                .interactiveDismissDisabled()
+        }
+        .alert(
+            language.localized("Link not valid", "Enlace no válido"),
+            isPresented: Binding(
+                get: { authViewModel.authLinkError != nil },
+                set: { isPresented in
+                    if !isPresented { authViewModel.authLinkError = nil }
+                }
+            )
+        ) {
+            Button(language.localized("OK", "Aceptar"), role: .cancel) {}
+        } message: {
+            Text(authViewModel.authLinkError ?? "")
+        }
+        .alert(
+            language.localized("Other devices", "Otros dispositivos"),
+            isPresented: Binding(
+                get: { authViewModel.otherSessionsNotice != nil },
+                set: { isPresented in
+                    if !isPresented { authViewModel.otherSessionsNotice = nil }
+                }
+            )
+        ) {
+            Button(language.localized("Try again", "Reintentar")) {
+                Task { await authViewModel.retrySignOutOfOtherSessions() }
+            }
+            Button(language.localized("OK", "Aceptar"), role: .cancel) {}
+        } message: {
+            Text(authViewModel.otherSessionsNotice ?? "")
         }
     }
 

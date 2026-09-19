@@ -61,4 +61,36 @@ final class SupabaseAuthService {
     func signOut() async throws {
         try await client.auth.signOut()
     }
+
+    // MARK: Password recovery
+
+    /// Asks Supabase to email a reset link. Supabase answers the same way whether or not the
+    /// account exists, so callers must not treat success as proof that it does.
+    func sendPasswordReset(email: String) async throws {
+        try await client.auth.resetPasswordForEmail(
+            email,
+            redirectTo: SupabaseConfig.passwordResetRedirectURL
+        )
+    }
+
+    /// Turns the link that opened the app into a (recovery) session. The URL carries a one-time
+    /// code or token: never log it.
+    @discardableResult
+    func session(from url: URL) async throws -> Session {
+        try await client.auth.session(from: url)
+    }
+
+    func updatePassword(_ newPassword: String) async throws {
+        _ = try await client.auth.update(user: UserAttributes(password: newPassword))
+    }
+
+    /// Revokes every session of the user except this device's.
+    func signOutOtherSessions() async throws {
+        try await client.auth.signOut(scope: .others)
+    }
+
+    /// Ends only this device's session, leaving the user's other devices signed in.
+    func signOutCurrentSession() async throws {
+        try await client.auth.signOut(scope: .local)
+    }
 }

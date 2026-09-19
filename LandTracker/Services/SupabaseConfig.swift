@@ -9,6 +9,8 @@ enum SupabaseConfig {
     )
     static let anonKey = requiredString(for: "SUPABASE_ANON_KEY")
     static let emailConfirmationRedirectURL = optionalURL(for: "SUPABASE_EMAIL_CONFIRMATION_REDIRECT_URL")
+    /// Where the password-reset email link sends the user back into the app.
+    static let passwordResetRedirectURL = URL(string: "\(AppDeepLink.scheme)://\(AppDeepLink.passwordResetHost)")
 
     private static func requiredURL(fullURLKey: String, schemeKey: String, hostKey: String, portKey: String) -> URL {
         if let fullURL = optionalString(for: fullURLKey) {

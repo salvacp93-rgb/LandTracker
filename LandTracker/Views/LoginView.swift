@@ -9,6 +9,7 @@ struct LoginView: View {
     @ObservedObject var viewModel: AuthViewModel
     @AppStorage(AccountPreferences.appLanguageKey) private var appLanguageRaw = AppSettings.defaultLanguage.rawValue
     @State private var showingRegistration = false
+    @State private var showingForgotPassword = false
     @State private var showingEmployeeInviteInfo = false
     @State private var autoSubmitTask: Task<Void, Never>?
     @FocusState private var focusedField: LoginField?
@@ -37,6 +38,8 @@ struct LoginView: View {
                         .padding(.top, 32)
 
                     credentialCard
+
+                    forgotPasswordLink
 
                     if let error = viewModel.errorMessage {
                         StatusBanner(text: error, icon: "exclamationmark.triangle.fill", tint: AppTheme.negative)
@@ -115,6 +118,11 @@ struct LoginView: View {
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.visible)
         }
+        .sheet(isPresented: $showingForgotPassword) {
+            ForgotPasswordView(viewModel: viewModel)
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+        }
         .onAppear {
             viewModel.mode = .login
             Task { await viewModel.loadSession() }
@@ -127,6 +135,14 @@ struct LoginView: View {
                 dismissKeyboard()
                 cancelAutoSubmit()
             }
+        }
+        // A reset link (or a "link not valid" alert) is presented by RootView, which cannot show
+        // anything over a sheet this view has up. Close them so it appears right away.
+        .onChange(of: viewModel.isSettingNewPassword) { _, isSetting in
+            if isSetting { dismissAuthSheets() }
+        }
+        .onChange(of: viewModel.authLinkError != nil) { _, hasError in
+            if hasError { dismissAuthSheets() }
         }
         .onDisappear {
             cancelAutoSubmit()
@@ -241,6 +257,32 @@ struct LoginView: View {
         .padding(.horizontal, 24)
     }
 
+    private var forgotPasswordLink: some View {
+        HStack {
+            Spacer(minLength: 0)
+
+            Button {
+                viewModel.errorMessage = nil
+                hideEmployeeInviteInfo(animated: false)
+                dismissKeyboard()
+                showingForgotPassword = true
+            } label: {
+                Text(language.localized("Forgot your password?", "¿Has olvidado tu contraseña?"))
+                    .font(.poppins(.footnote, .semibold))
+                    .multilineTextAlignment(.trailing)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(AppTheme.clayText)
+            .disabled(viewModel.isLoading)
+        }
+        .padding(.horizontal, 28)
+        // The 44 pt tap target is taller than the text; pull the neighbours closer so the link
+        // still reads as attached to the credential card, as in the design.
+        .padding(.vertical, -10)
+    }
+
     private func toggleEmployeeInviteInfo() {
         withAnimation(.spring(response: 0.28, dampingFraction: 0.9)) {
             showingEmployeeInviteInfo.toggle()
@@ -283,6 +325,11 @@ struct LoginView: View {
         focusedField = nil
     }
 
+    private func dismissAuthSheets() {
+        showingRegistration = false
+        showingForgotPassword = false
+    }
+
     private func hideEmployeeInviteInfo(animated: Bool = true) {
         guard showingEmployeeInviteInfo else { return }
         if animated {
@@ -295,7 +342,7 @@ struct LoginView: View {
     }
 }
 
-private struct LoginCredentialField<Field: View>: View {
+struct LoginCredentialField<Field: View>: View {
     let label: String
     let icon: String
     @ViewBuilder var field: () -> Field
@@ -329,7 +376,7 @@ private struct LoginCredentialField<Field: View>: View {
     }
 }
 
-private struct StatusBanner: View {
+struct StatusBanner: View {
     let text: String
     let icon: String
     let tint: Color
