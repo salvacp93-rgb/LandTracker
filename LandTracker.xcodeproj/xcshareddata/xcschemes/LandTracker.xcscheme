@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B9D01F3F2F3681D800621DDE"
                BuildableName = "LandTracker.app"
+               BlueprintName = "LandTracker"
                ReferencedContainer = "container:LandTracker.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,6 +47,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B9D01F3F2F3681D800621DDE"
             BuildableName = "LandTracker.app"
+            BlueprintName = "LandTracker"
             ReferencedContainer = "container:LandTracker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,6 +64,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B9D01F3F2F3681D800621DDE"
             BuildableName = "LandTracker.app"
+            BlueprintName = "LandTracker"
             ReferencedContainer = "container:LandTracker.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
